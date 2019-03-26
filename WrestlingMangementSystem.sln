@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WrestlingMangementSystem", "WrestlingMangementSystem\WrestlingMangementSystem.csproj", "{86BF95B1-451A-4D04-8632-94E0B778C15F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86BF95B1-451A-4D04-8632-94E0B778C15F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86BF95B1-451A-4D04-8632-94E0B778C15F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86BF95B1-451A-4D04-8632-94E0B778C15F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86BF95B1-451A-4D04-8632-94E0B778C15F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {554AF0E6-AAB4-483F-AEF4-F030DB6FAC64}
+	EndGlobalSection
+EndGlobal
