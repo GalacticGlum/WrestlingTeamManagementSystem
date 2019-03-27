@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WrestlingMangementSystem", "WrestlingMangementSystem\WrestlingMangementSystem.csproj", "{86BF95B1-451A-4D04-8632-94E0B778C15F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WrestlingManagementSystem", "WrestlingMangementSystem\WrestlingManagementSystem.csproj", "{86BF95B1-451A-4D04-8632-94E0B778C15F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
