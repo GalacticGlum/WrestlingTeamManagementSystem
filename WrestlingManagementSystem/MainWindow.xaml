@@ -3,10 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WrestlingManagementSystem"
+        xmlns:wrestlingManagementSystem="clr-namespace:WrestlingManagementSystem"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <DockPanel.Background>
+            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+        </DockPanel.Background>
+        <Menu DockPanel.Dock="Top" Background="White" BorderThickness="0,0,0,1">
+            <MenuItem Header="File">
+                <MenuItem Header="New Team" />
+                <MenuItem Header="Open Team" />
+                <MenuItem Header="Save Team" />
+                <Separator />
+                <MenuItem Header="Exit" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+            </MenuItem>
+            <MenuItem Header="View">
+            </MenuItem>
+        </Menu>
+
+        <Grid Margin="10,15,10,20">
+            <TabControl>
+                <TabItem Header="Browse Data">
+                    <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding TestData}" HeadersVisibility="All"
+                              wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader">
+                        <DataGrid.HorizontalGridLinesBrush>
+                            <SolidColorBrush Color="#D8D8D8" />
+                        </DataGrid.HorizontalGridLinesBrush>
+                        <DataGrid.VerticalGridLinesBrush>
+                            <SolidColorBrush Color="#D8D8D8" />
+                        </DataGrid.VerticalGridLinesBrush>
+                    </DataGrid>
+                </TabItem>
+                <TabItem Header="Statistics">
+                    <Label Content="Sample stats"></Label>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </DockPanel>
 </Window>

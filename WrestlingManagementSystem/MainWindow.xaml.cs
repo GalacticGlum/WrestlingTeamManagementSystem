@@ -7,20 +7,9 @@
  * Description: Interaction logic for MainWindow.xaml
  */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WrestlingManagementSystem
 {
@@ -29,9 +18,52 @@ namespace WrestlingManagementSystem
     /// </summary>
     public partial class MainWindow : Window
     {
+        public struct TestEntry
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public Gender Gender { get; set; }
+
+            public TestEntry(string firstName, string lastName, Gender gender)
+            {
+                FirstName = firstName;
+                LastName = lastName;
+                Gender = gender;
+            }
+        }
+
+        public List<TestEntry> TestData { get; set; }
+        public string Label { get; set; } = "Test";
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
+
+            TestData = new List<TestEntry>
+            {
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male),
+                new TestEntry("Foo", "Bar", Gender.Male)
+            };
         }
     }
 }
