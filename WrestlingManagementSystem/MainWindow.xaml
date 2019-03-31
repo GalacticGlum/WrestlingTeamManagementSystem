@@ -24,23 +24,47 @@
             </MenuItem>
         </Menu>
 
-        <Grid Margin="10,15,10,20">
-            <TabControl>
-                <TabItem Header="Browse Data">
-                    <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding TestData}" HeadersVisibility="All"
-                              wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader">
-                        <DataGrid.HorizontalGridLinesBrush>
-                            <SolidColorBrush Color="#D8D8D8" />
-                        </DataGrid.HorizontalGridLinesBrush>
-                        <DataGrid.VerticalGridLinesBrush>
-                            <SolidColorBrush Color="#D8D8D8" />
-                        </DataGrid.VerticalGridLinesBrush>
-                    </DataGrid>
-                </TabItem>
-                <TabItem Header="Statistics">
-                    <Label Content="Sample stats"></Label>
-                </TabItem>
-            </TabControl>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75*" />
+                <ColumnDefinition Width="25*" />
+            </Grid.ColumnDefinitions>
+            <Border Margin="10" Background="White" BorderThickness="1" CornerRadius="1" 
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="#D8D8D8" />
+                </Border.BorderBrush>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    Margin="1,10,1,2" BorderThickness="1" CornerRadius="1">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#828790" />
+                        </Border.BorderBrush>
+                        <ScrollViewer>
+                            <StackPanel ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding TestData}" HeadersVisibility="All"
+                                      wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader"
+                                      BorderThickness="0">
+                                    <DataGrid.HorizontalGridLinesBrush>
+                                        <SolidColorBrush Color="#D8D8D8" />
+                                    </DataGrid.HorizontalGridLinesBrush>
+                                    <DataGrid.VerticalGridLinesBrush>
+                                        <SolidColorBrush Color="#D8D8D8" />
+                                    </DataGrid.VerticalGridLinesBrush>
+                                </DataGrid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Border>
         </Grid>
     </DockPanel>
 </Window>
