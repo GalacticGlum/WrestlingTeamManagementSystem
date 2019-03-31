@@ -8,6 +8,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace WrestlingManagementSystem
 {
@@ -32,9 +33,10 @@ namespace WrestlingManagementSystem
         {
             get
             {
-                // TODO: Implement weight category placement
-                return 0;
+               
             }
         }
+
+        private List<Tuple<string, List<float>>>
     }
 }

@@ -7,7 +7,6 @@
  * Description: Interaction logic for MainWindow.xaml
  */
 
-using System.Collections.Generic;
 using System.Windows;
 
 namespace WrestlingManagementSystem
