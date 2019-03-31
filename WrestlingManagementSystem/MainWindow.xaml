@@ -13,7 +13,7 @@
         <Menu DockPanel.Dock="Top" Background="White" BorderThickness="0,0,0,1">
             <MenuItem Header="File">
                 <MenuItem Header="New Team" />
-                <MenuItem Header="Open Team" />
+                <MenuItem Header="Open Team" Click="OnOpenTeamMenuClicked"/>
                 <MenuItem Header="Save Team" />
                 <Separator />
                 <MenuItem Header="Exit" />

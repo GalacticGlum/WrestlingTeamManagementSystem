@@ -59,9 +59,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataGridBehaviour.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LoggerDestination.cs" />
+    <Compile Include="Logging\LoggerVerbosity.cs" />
     <Compile Include="MainWindowDataContext.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Wrestler.cs" />
     <Compile Include="WrestlerStatus.cs" />
+    <Compile Include="WeightCategoryCollection.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -102,6 +107,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="WeightCategories.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

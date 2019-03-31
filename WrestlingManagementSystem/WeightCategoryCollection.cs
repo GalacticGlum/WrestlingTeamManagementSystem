@@ -4,7 +4,7 @@
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/31/2019
  * Modified Date: 03/31/2019
- * Description: DESCRIPTION
+ * Description: A discrete collection of weight categories for a specified Gender.
  */
 
 using System.Collections.Generic;
@@ -12,12 +12,15 @@ using Newtonsoft.Json;
 
 namespace WrestlingManagementSystem
 {
-    public struct WrestlerWeightCategory
+    /// <summary>
+    /// A discrete collection of weight categories for a specified <see cref="WrestlingManagementSystem.Gender"/>.
+    /// </summary>
+    public struct WeightCategoryCollection
     {
         [JsonProperty("Gender", Required = Required.Always)]
-        public Gender CategoryGender { get; }
+        public Gender Gender { get; }
 
         [JsonProperty("Weight", Required = Required.Always)]
-        public List<float> Weights { get; }
+        public List<float> Weights { get; set; }
     }
 }
