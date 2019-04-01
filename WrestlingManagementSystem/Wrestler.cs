@@ -14,6 +14,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Resources;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
@@ -59,17 +60,17 @@ namespace WrestlingManagementSystem
         }
 
 
-        public DateTime Birthdate { get; private set; }
-        public float Weight { get; private set; }
+        public DateTime Birthdate { get; set; }
+        public float Weight { get; set; }
 
-        public int Wins { get; private set; }
-        public int WinsByPin { get; private set; }
+        public int Wins { get; set; }
+        public int WinsByPin { get; set; }
 
-        public int Losses { get; private set; }
-        public int TotalPoints { get; private set; }
+        public int Losses { get; set; }
+        public int TotalPoints { get; set; }
 
-        public WrestlerStatus Status { get; private set; }
-        public bool IsUnfiformSignedOut { get; private set; }
+        public WrestlerStatus Status { get; set; }
+        public bool IsUnfiformSignedOut { get; set; }
 
         public int TotalMatches => Wins + Losses;
         public float WinPercentage => Wins / (float)TotalMatches * 100.0f;
@@ -80,7 +81,7 @@ namespace WrestlingManagementSystem
             get
             {
                 float weightCategory = float.MinValue;
-                foreach (float currentWeightCategory in weightCategoriesCache[Gender].Weights)
+                foreach (float currentWeightCategory in WeightCategories[Gender].Weights)
                 {
                     if (Weight < currentWeightCategory)
                     {
@@ -89,7 +90,7 @@ namespace WrestlingManagementSystem
                 }
 
                 List<float> candidateCategories = new List<float>();
-                foreach (float currentWeightCategory in weightCategoriesCache[Gender].Weights)
+                foreach (float currentWeightCategory in WeightCategories[Gender].Weights)
                 {
                     if (Weight <= currentWeightCategory)
                     {
@@ -100,7 +101,7 @@ namespace WrestlingManagementSystem
                 // If there are no candidate categories (i.e. the weight of the wrestler is not less than any category),
                 // that means that wrestler exceeds the largest weight category so they should be placed in that one; otherwise,
                 // select the smallest candidate category.
-                return candidateCategories.Count == 0 ? weightCategoriesCache[Gender].Weights.Max() : candidateCategories.Min();
+                return candidateCategories.Count == 0 ? WeightCategories[Gender].Weights.Max() : candidateCategories.Min();
             }
         }
     }

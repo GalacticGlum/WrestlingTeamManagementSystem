@@ -64,6 +64,7 @@
     <Compile Include="Logging\LoggerVerbosity.cs" />
     <Compile Include="MainWindowDataContext.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
+    <Compile Include="Team.cs" />
     <Compile Include="Wrestler.cs" />
     <Compile Include="WrestlerStatus.cs" />
     <Compile Include="WeightCategoryCollection.cs" />

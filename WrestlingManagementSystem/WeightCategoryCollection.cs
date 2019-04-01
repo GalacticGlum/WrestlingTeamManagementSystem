@@ -18,9 +18,9 @@ namespace WrestlingManagementSystem
     public struct WeightCategoryCollection
     {
         [JsonProperty("Gender", Required = Required.Always)]
-        public Gender Gender { get; }
+        public Gender Gender { get; set; }
 
-        [JsonProperty("Weight", Required = Required.Always)]
+        [JsonProperty("Weights", Required = Required.Always)]
         public List<float> Weights { get; set; }
     }
 }

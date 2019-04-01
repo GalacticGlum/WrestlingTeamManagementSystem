@@ -11,11 +11,11 @@ namespace WrestlingManagementSystem
 {
     public abstract class Member
     {
-        public string FirstName { get; protected set; }
-        public string LastName { get; protected set; }
-        public Gender Gender { get; protected set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public Gender Gender { get; set; }
 
-        public string School { get; protected set; }
-        public int YearsOfExperience { get; protected set; } = 0;
+        public string School { get; set; }
+        public int YearsOfExperience { get; set; } = 0;
     }
 }

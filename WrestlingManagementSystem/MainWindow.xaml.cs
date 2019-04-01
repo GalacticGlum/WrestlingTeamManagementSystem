@@ -52,7 +52,7 @@ namespace WrestlingManagementSystem
 
             if (openFileDialog.ShowDialog() == true)
             {
-                Logger.Log(openFileDialog.FileName);
+                // TODO: Load file!
             }
         }
     }

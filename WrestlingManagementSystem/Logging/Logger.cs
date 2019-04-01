@@ -250,7 +250,7 @@ namespace WrestlingManagementSystem.Logging
                     string caption = string.IsNullOrEmpty(category) ? Assembly.GetEntryAssembly().GetName().Name : category;
 
                     // Show a message box with the appropriate icon corresponding to the message verbosity
-                    switch (Verbosity)
+                    switch (messageVerbosity)
                     {
                         case LoggerVerbosity.Plain:
                             MessageBox.Show(message.ToString(), caption, MessageBoxButton.OK, MessageBoxImage.None);
