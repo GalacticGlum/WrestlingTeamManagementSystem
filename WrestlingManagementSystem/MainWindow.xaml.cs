@@ -15,14 +15,20 @@ using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
 {
+    /// <inheritdoc cref="Window" />
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <inheritdoc />
+        /// <summary>
+        /// Initializes a new <see cref="T:WrestlingManagementSystem.MainWindow" />.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowDataContext();
             Closing += OnClosing;
         }
 

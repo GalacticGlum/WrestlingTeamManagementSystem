@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:wrestlingManagementSystem="clr-namespace:WrestlingManagementSystem"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        d:DataContext="{d:DesignInstance wrestlingManagementSystem:MainWindowDataContext, d:IsDesignTimeCreatable=False}"
+        Title="Wrestlig Management System" Height="450" Width="800">
     <DockPanel>
         <DockPanel.Background>
             <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
@@ -15,6 +16,8 @@
                 <MenuItem Header="New Team" />
                 <MenuItem Header="Open Team" Click="OnOpenTeamMenuClicked"/>
                 <MenuItem Header="Save Team" />
+                <Separator />
+                <MenuItem Header="Recent Teams"/>
                 <Separator />
                 <MenuItem Header="Exit" />
             </MenuItem>

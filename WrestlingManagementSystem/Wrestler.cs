@@ -14,7 +14,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Resources;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
@@ -33,7 +32,8 @@ namespace WrestlingManagementSystem
                 StreamResourceInfo resourceStreamInfo = Application.GetResourceStream(weightCategoriesJsonUri);
 
                 // Make sure that our resource stream is available.
-                Logger.Assert(resourceStreamInfo != null, "Resource by name \'WeightCategories.json\' not found or could not be loaded", LoggerDestination.Form);
+                Logger.Assert(resourceStreamInfo != null, "Resource by name \'WeightCategories.json\' " +
+                                                          "not found or could not be loaded", LoggerDestination.Form);
 
                 weightCategoriesCache = new Dictionary<Gender, WeightCategoryCollection>();
                 using (StreamReader reader = new StreamReader(resourceStreamInfo.Stream))
