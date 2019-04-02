@@ -9,7 +9,9 @@
 
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Win32;
 using WrestlingManagementSystem.Logging;
 
@@ -28,7 +30,7 @@ namespace WrestlingManagementSystem
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowDataContext();
+            DataContext = new MainWindowDataContext(this);
             Closing += OnClosing;
         }
 
@@ -60,6 +62,27 @@ namespace WrestlingManagementSystem
             {
                 // TODO: Load file!
             }
+
+            MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
+            dataContext.AddTeam(new Team(Path.GetFileNameWithoutExtension(openFileDialog.FileName)));
         }
+
+        /// <summary>
+        /// Handles the team selection combobox event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnTeamSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+            dataContext.IsTeamSelected = TeamSelectionComboBox.SelectedItem != null;
+        }
+
+        /// <summary>
+        /// Handle the exit menu item clicked event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnExitMenuClicked(object sender, RoutedEventArgs args) => Application.Current.Shutdown();
     }
 }

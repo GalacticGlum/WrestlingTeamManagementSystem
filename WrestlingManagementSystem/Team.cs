@@ -3,7 +3,7 @@
  * File Name: Team.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/31/2019
- * Modified Date: 03/31/2019
+ * Modified Date: 04/01/2019
  * Description: DESCRIPTION
  */
 
@@ -15,6 +15,14 @@ namespace WrestlingManagementSystem
 {
     public class Team
     {
+        /// <summary>
+        /// The name of the team.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// The <see cref="Member"/>s in this <see cref="Team"/>.
+        /// </summary>
         public ObservableCollection<Member> Members { get; set; }
 
         /// <summary>
@@ -118,5 +126,15 @@ namespace WrestlingManagementSystem
         /// The average points per match for this <see cref="Team"/>.
         /// </summary>
         public float AveragePointsPerMatch => TotalPoints / (float)TotalMatches;
+
+        /// <summary>
+        /// Initializes a new <see cref="Team"/>.
+        /// </summary>
+        /// <param name="name">The name of the <see cref="Team"/>.</param>
+        public Team(string name)
+        {
+            Name = name;
+            Members = new ObservableCollection<Member>();
+        }
     }
 }

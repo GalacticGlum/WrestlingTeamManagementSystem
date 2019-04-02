@@ -8,6 +8,7 @@
  *              It is notified when data is changed and updates data accordingly.
  */
 
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -21,8 +22,6 @@ namespace WrestlingManagementSystem
     /// </summary>
     public sealed class MainWindowDataContext : INotifyPropertyChanged
     {
-        private ObservableCollection<Team> teams;
-
         /// <summary>
         /// A collection of all the loaded teams.
         /// </summary>
@@ -37,10 +36,29 @@ namespace WrestlingManagementSystem
         }
 
         /// <summary>
+        /// Indicates whether a <see cref="Team"/> is currently selected.
+        /// </summary>
+        public bool IsTeamSelected
+        {
+            get => isTeamSelected;
+            set
+            {
+                isTeamSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private readonly MainWindow mainWindowInstance;
+
+        private ObservableCollection<Team> teams;
+        private bool isTeamSelected;
+
+        /// <summary>
         /// Initializes a new <see cref="MainWindowDataContext"/>.
         /// </summary>
-        public MainWindowDataContext()
+        public MainWindowDataContext(MainWindow mainWindowInstance)
         {
+            this.mainWindowInstance = mainWindowInstance;
             Teams = new ObservableCollection<Team>();
         }
 
@@ -60,6 +78,16 @@ namespace WrestlingManagementSystem
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        /// <summary>
+        /// Adds a new <see cref="Team"/> and focuses it in the editor.
+        /// </summary>
+        /// <param name="team">The <see cref="Team"/> to add.</param>
+        public void AddTeam(Team team)
+        {
+            Teams.Add(team);
+            mainWindowInstance.TeamSelectionComboBox.SelectedItem = team;
         }
     }
 }

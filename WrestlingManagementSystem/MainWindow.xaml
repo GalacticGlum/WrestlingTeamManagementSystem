@@ -23,7 +23,7 @@
                 <Separator />
                 <MenuItem Header="Recent Teams"/>
                 <Separator />
-                <MenuItem Header="Exit" />
+                <MenuItem Header="Exit" Click="OnExitMenuClicked" />
             </MenuItem>
             <MenuItem Header="Edit">
             </MenuItem>
@@ -60,14 +60,15 @@
                             <ColumnDefinition Width="30*" />
                         </Grid.ColumnDefinitions>
                         <Label Content="Teams:" Grid.Column="0"/>
-                        <ComboBox Grid.Column="1" HorizontalContentAlignment="Stretch">
-                            <ComboBoxItem>ComboBox Item #1jhgjjghggfhjghjghfjgfhjghjghghjfgfhjgjfh</ComboBoxItem>
-                            <ComboBoxItem IsSelected="True">ComboBox Item #2</ComboBoxItem>
-                            <ComboBoxItem>ComboBox Item #3</ComboBoxItem>
-                        </ComboBox>
+                        <ComboBox Name="TeamSelectionComboBox" Grid.Column="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Teams}" DisplayMemberPath="Name" 
+                                  SelectionChanged="OnTeamSelectionChanged"/>
                         <DockPanel Grid.Column="2" LastChildFill="False">
-                            <Button Padding="5,0,5,0" DockPanel.Dock="Right">Delete Member</Button>
-                            <Button Padding="5,0,5,0" Margin="0,0,5,0" DockPanel.Dock="Right">New Member</Button>
+                            <Button Name="DeleteMemberButton" Padding="5,0,5,0" DockPanel.Dock="Right" IsEnabled="{Binding IsTeamSelected}">
+                                Delete Member
+                            </Button>
+                            <Button Name="NewRememberButton" Padding="5,0,5,0" Margin="0,0,5,0" DockPanel.Dock="Right" IsEnabled="{Binding IsTeamSelected}">
+                                New Member
+                            </Button>
                         </DockPanel>
                     </Grid>
 
