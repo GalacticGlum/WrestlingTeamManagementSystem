@@ -20,6 +20,7 @@
                 <MenuItem Header="New Team" />
                 <MenuItem Header="Open Team" Click="OnOpenTeamMenuClicked"/>
                 <MenuItem Header="Save Team" />
+                <MenuItem Header="Close Team" Click="OnCloseTeamMenuClicked" IsEnabled="{Binding IsTeamSelected}" />
                 <Separator />
                 <MenuItem Header="Recent Teams"/>
                 <Separator />

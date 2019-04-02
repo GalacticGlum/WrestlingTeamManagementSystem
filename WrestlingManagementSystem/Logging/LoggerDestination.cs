@@ -20,25 +20,25 @@ namespace WrestlingManagementSystem.Logging
         /// <summary>
         /// Do not log to anywhere.
         /// </summary>
-        None = 0,
+        None = 1,
 
         /// <summary>
-        /// Only log to the standard output (<see cref="Console"/> or <see cref="Trace"/>).
+        /// Log to the standard output (<see cref="Console"/> or <see cref="Trace"/>).
         /// </summary>
-        Output = 1,
+        Output = 2,
 
         /// <summary>
-        /// Only log to file.
+        /// Log to file.
         /// </summary>
-        File = 2,
+        File = 4,
 
         /// <summary>
-        /// Displays a message box
+        /// Log by displaying a message box
         /// </summary>
-        Form = 3,
+        Form = 8,
 
         /// <summary>
-        /// Log to both file and standard output.
+        /// Log to file, standard output, and form.
         /// </summary>
         All = File | Output | Form
     }

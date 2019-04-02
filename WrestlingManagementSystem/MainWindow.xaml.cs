@@ -25,7 +25,7 @@ namespace WrestlingManagementSystem
     {
         /// <inheritdoc />
         /// <summary>
-        /// Initializes a new <see cref="T:WrestlingManagementSystem.MainWindow" />.
+        /// Initializes a new <see cref="MainWindow" />.
         /// </summary>
         public MainWindow()
         {
@@ -60,19 +60,29 @@ namespace WrestlingManagementSystem
 
             if (openFileDialog.ShowDialog() != true) return;
 
-            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
-            if (dataContext.LoadedTeamFilepaths.Contains(openFileDialog.FileName))
-            {
-                Logger.Log(string.Empty, "A team with this filepath has already been loaded!", LoggerVerbosity.Info, LoggerDestination.Form);
-                return;
-            }
-
             Team team = Team.Load(openFileDialog.FileName);
-            dataContext.LoadedTeamFilepaths.Add(openFileDialog.FileName);
-
             if (team == null) return;
 
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+            dataContext.RecentLoadedTeamFilepaths.Add(openFileDialog.FileName);
             dataContext.AddTeam(team);
+        }
+
+        /// <summary>
+        /// Handle the closed team menu clicked event. This deletes the currently selected team.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnCloseTeamMenuClicked(object sender, RoutedEventArgs args)
+        {
+            MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
+            Team selectedTeam = (Team) TeamSelectionComboBox.SelectedItem;
+            int selectedTeamIndex = TeamSelectionComboBox.SelectedIndex;
+
+            dataContext.Teams.Remove(selectedTeam);
+
+            if (dataContext.Teams.Count == 0) return;
+            TeamSelectionComboBox.SelectedItem = (Team) TeamSelectionComboBox.Items[selectedTeamIndex - 1];
         }
 
         /// <summary>

@@ -49,12 +49,9 @@ namespace WrestlingManagementSystem
         }
 
         /// <summary>
-        /// A collection of the paths to all the team data files that have been loaded.
-        /// <remarks>
-        /// Used for uniqueness check during the loading process.
-        /// </remarks>
+        /// A collection of the paths to all the team data files that have recently been loaded.
         /// </summary>
-        public HashSet<string> LoadedTeamFilepaths { get; }
+        public HashSet<string> RecentLoadedTeamFilepaths { get; }
 
         private readonly MainWindow mainWindowInstance;
         private ObservableCollection<Team> teams;
@@ -66,7 +63,7 @@ namespace WrestlingManagementSystem
         public MainWindowDataContext(MainWindow mainWindowInstance)
         {
             this.mainWindowInstance = mainWindowInstance;
-            LoadedTeamFilepaths = new HashSet<string>();
+            RecentLoadedTeamFilepaths = new HashSet<string>();
 
             Teams = new ObservableCollection<Team>();
         }

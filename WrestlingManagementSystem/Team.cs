@@ -145,6 +145,11 @@ namespace WrestlingManagementSystem
         /// <summary>
         /// Loads a <see cref="Team"/> from the data file at the specified <paramref name="filepath"/>.
         /// </summary>
+        /// <remarks>
+        /// In most cases, even if there is an error reading a specific line of the data file,
+        /// the rest of the file will stead be read since that data could fine; hence, the return value
+        /// will often not be <value>null</value>, even if errors were encountered.
+        /// </remarks>
         /// <param name="filepath">The path to the data file.</param>
         /// <returns>A <see cref="Team"/> object containing the loaded data or <value>null</value> if the <see cref="Team"/> could not be loaded.</returns>
         public static Team Load(string filepath)
@@ -159,7 +164,8 @@ namespace WrestlingManagementSystem
 
             // The name of the team is the same as the data file name without its extension.
             Team result = new Team(Path.GetFileNameWithoutExtension(filepath));
-            StringBuilder errorBuffer = new StringBuilder();
+
+            int errorCount = 0;
 
             string[] lines = File.ReadAllLines(filepath);
             for (int i = 0; i < lines.Length; i++)
@@ -172,7 +178,7 @@ namespace WrestlingManagementSystem
 
                 // Temporary error message buffer used to reduce
                 // string interning overhead
-                string errorMessage = string.Empty;
+                string errorMessage;
 
                 // Check if our line is empty or consists of no comma-separated values. 
                 // If this is the case, skip this line and continue reading the file and log
@@ -183,7 +189,7 @@ namespace WrestlingManagementSystem
                     errorMessage = $"Encountered empty line on line {i + 1}.\n\n(\"{filepath}\")";
                     Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Warning);
 
-                    errorBuffer.AppendLine(errorMessage);
+                    errorCount += 1;
                     continue;
                 }
 
@@ -200,7 +206,7 @@ namespace WrestlingManagementSystem
                         {
                             errorMessage = $"Failed to load Coach on line {i + 1}.";
                             Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Error);
-                            errorBuffer.AppendLine(errorMessage);
+                            errorCount += 1;
                         }
 
                         result.Members.Add(coach);
@@ -212,7 +218,7 @@ namespace WrestlingManagementSystem
                         {
                             errorMessage = $"Failed to load Wrestler on line {i + 1}.";
                             Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Error);
-                            errorBuffer.AppendLine(errorMessage);
+                            errorCount += 1;
                         }
 
                         result.Members.Add(wrestler);
@@ -223,15 +229,14 @@ namespace WrestlingManagementSystem
                             $"loading a team data file on line {i + 1}.\n(\"{filepath}\")", 
                             LoggerVerbosity.Warning);
 
+                        errorCount += 1;
                         break;
                 }
             }
 
-            if (errorBuffer.Length > 0)
+            if (errorCount > 0)
             {
-                errorBuffer.AppendLine("\nView log for more details.");
-                Logger.Log(string.Empty, errorBuffer.ToString(), LoggerVerbosity.Error, 
-                    LoggerDestination.Form);
+                Logger.Log(string.Empty, $"{errorCount} errors while loading team!\n\nView log for more details.", LoggerVerbosity.Error, LoggerDestination.Form);
             }
 
             return result;
