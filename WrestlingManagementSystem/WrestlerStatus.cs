@@ -13,7 +13,6 @@ namespace WrestlingManagementSystem
     {
         Active,
         Injured,
-        Cut,
         Quit
     }
 }

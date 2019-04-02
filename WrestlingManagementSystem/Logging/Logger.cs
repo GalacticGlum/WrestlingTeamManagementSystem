@@ -149,13 +149,13 @@ namespace WrestlingManagementSystem.Logging
 
             // Print format
             const string format = "[yyyy-MM-dd HH:mm:ss.fff][verbosity] <category>: <message>";
-            if ((Destination & LoggerDestination.File) != 0)
+            if (Destination.HasFlag(LoggerDestination.File))
             {
                 messageBuffer.AppendLine(format);
                 messageBuffer.AppendLine('-'.Multiply(format.Length));
             }
 
-            if ((Destination & LoggerDestination.Output) == 0) return;
+            if (Destination.HasFlag(LoggerDestination.Output)) return;
 
             Console.WriteLine(format);
             Console.WriteLine('-'.Multiply(format.Length));

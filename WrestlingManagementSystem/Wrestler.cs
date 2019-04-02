@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -20,6 +21,16 @@ namespace WrestlingManagementSystem
 {
     public class Wrestler : Member
     {
+        /// <summary>
+        /// The tag string indicating the member type.
+        /// </summary>
+        public const string SerializationTypeTag = "Wrestler";
+
+        /// <summary>
+        /// The number of comma-separated values in a wrestler data line.
+        /// </summary>
+        private const int SerializationParameterLength = 14;
+
         private static Dictionary<Gender, WeightCategoryCollection> weightCategoriesCache;
         private static Dictionary<Gender, WeightCategoryCollection> WeightCategories
         {
@@ -58,7 +69,6 @@ namespace WrestlingManagementSystem
                 return weightCategoriesCache;
             }
         }
-
 
         public DateTime Birthdate { get; set; }
         public float Weight { get; set; }
@@ -107,6 +117,84 @@ namespace WrestlingManagementSystem
                 // select the smallest candidate category.
                 return candidateCategories.Count == 0 ? WeightCategories[Gender].Weights.Max() : candidateCategories.Min();
             }
+        }
+
+        public override bool Load(string data)
+        {
+            if (!base.Load(data)) return false;
+
+            string[] parts = data.Split(',');
+            if (parts.Length < SerializationParameterLength)
+            {
+                Logger.LogFunctionEntry(string.Empty, "Failed to load wrestler! Missing parameters.");
+                return false;
+            }
+
+            if (!DateTime.TryParseExact(parts[5], "MM/dd/yyyy", CultureInfo.InvariantCulture, 
+                DateTimeStyles.None, out DateTime birthdate))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Invalid datetime format.");
+                return false;
+            }
+
+            if (!float.TryParse(parts[6], out float weight))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Could not convert weight to float.");
+                return false;
+            }
+
+            if (!float.TryParse(parts[7], out float weightCategory))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Could not convert weight category to float.");
+                return false;
+            }
+
+            if (!int.TryParse(parts[8], out int wins))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Could not convert wins to int.");
+                return false;
+            }
+
+            if (!int.TryParse(parts[9], out int losses))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Could not convert losses to int.");
+                return false;
+            }
+
+            if (!int.TryParse(parts[10], out int totalPoints))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Could not convert total points to int.");
+                return false;
+            }
+
+            if (!int.TryParse(parts[11], out int winsByPin))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Could not convert wins by pin to int.");
+                return false;
+            }
+
+            if (!Enum.TryParse(parts[12], out WrestlerStatus wrestlerStatus))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Could not convert wrestler status to enum.");
+                return false;
+            }
+
+            if (!bool.TryParse(parts[13], out bool isUnfiformSignedOut))
+            {
+                Logger.LogFunctionEntry(string.Empty, "Could not convert uniform signed out to bool.");
+                return false;
+            }
+
+            Birthdate = birthdate;
+            Weight = weight;
+            Wins = wins;
+            Losses = losses;
+            TotalPoints = totalPoints;
+            WinsByPin = winsByPin;
+            Status = wrestlerStatus;
+            IsUnfiformSignedOut = isUnfiformSignedOut;
+
+            return true;
         }
     }
 }

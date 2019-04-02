@@ -8,7 +8,6 @@
  *              It is notified when data is changed and updates data accordingly.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
