@@ -3,7 +3,7 @@
  * File Name: Wrestler.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/27/2019
- * Modified Date: 03/31/2019
+ * Modified Date: 04/01/2019
  * Description: DESCRIPTION
  */
 
@@ -76,6 +76,10 @@ namespace WrestlingManagementSystem
         public float WinPercentage => Wins / (float)TotalMatches * 100.0f;
         public float LossPercentage => Losses / (float)TotalMatches * 100.0f;
         public float AverageMatchPoints => TotalPoints / (float)TotalMatches;
+
+        /// <summary>
+        /// The weight category of this <see cref="Wrestler"/>.
+        /// </summary>
         public float WeightCategory
         {
             get

@@ -3,7 +3,7 @@
  * File Name: MainWindow.xaml.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/26/2019
- * Modified Date: 03/26/2019
+ * Modified Date: 04/01/2019
  * Description: Interaction logic for MainWindow.xaml
  */
 
@@ -46,8 +46,8 @@ namespace WrestlingManagementSystem
         /// Handles the open team menu item clicked event. Opens an <see cref="OpenFileDialog"/> and loads in a new team.
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnOpenTeamMenuClicked(object sender, RoutedEventArgs e)
+        /// <param name="args"></param>
+        private void OnOpenTeamMenuClicked(object sender, RoutedEventArgs args)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {

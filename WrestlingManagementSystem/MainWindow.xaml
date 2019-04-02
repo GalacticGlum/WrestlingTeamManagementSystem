@@ -6,7 +6,11 @@
         xmlns:wrestlingManagementSystem="clr-namespace:WrestlingManagementSystem"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance wrestlingManagementSystem:MainWindowDataContext, d:IsDesignTimeCreatable=False}"
-        Title="Wrestlig Management System" Height="450" Width="800">
+        MinWidth="1024" MinHeight="768"
+        Title="Wrestling Management System" Width="1024" Height="768">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <DockPanel>
         <DockPanel.Background>
             <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
@@ -43,19 +47,40 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="15*"/>
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,10,10,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="60*" />
+                            <ColumnDefinition Width="30*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Teams:" Grid.Column="0"/>
+                        <ComboBox Grid.Column="1" HorizontalContentAlignment="Stretch">
+                            <ComboBoxItem>ComboBox Item #1jhgjjghggfhjghjghfjgfhjghjghghjfgfhjgjfh</ComboBoxItem>
+                            <ComboBoxItem IsSelected="True">ComboBox Item #2</ComboBoxItem>
+                            <ComboBoxItem>ComboBox Item #3</ComboBoxItem>
+                        </ComboBox>
+                        <DockPanel Grid.Column="2" LastChildFill="False">
+                            <Button Padding="5,0,5,0" DockPanel.Dock="Right">Delete Member</Button>
+                            <Button Padding="5,0,5,0" Margin="0,0,5,0" DockPanel.Dock="Right">New Member</Button>
+                        </DockPanel>
+                    </Grid>
+
                     <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                    Margin="1,10,1,2" BorderThickness="1" CornerRadius="1">
+                    Margin="10,0,10,0" BorderThickness="1" CornerRadius="1" Grid.RowSpan="2">
                         <Border.BorderBrush>
                             <SolidColorBrush Color="#828790" />
                         </Border.BorderBrush>
                         <ScrollViewer>
                             <StackPanel ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                <DataGrid HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding TestData}" HeadersVisibility="All"
-                                      wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader"
-                                      BorderThickness="0">
+                                <DataGrid Name="MembersDataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding TestData}" HeadersVisibility="All"
+                                      wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader" BorderThickness="0" 
+                                          Visibility="{Binding HasItems, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=MembersDataGrid, Mode=OneWay}">
                                     <DataGrid.HorizontalGridLinesBrush>
                                         <SolidColorBrush Color="#D8D8D8" />
                                     </DataGrid.HorizontalGridLinesBrush>
