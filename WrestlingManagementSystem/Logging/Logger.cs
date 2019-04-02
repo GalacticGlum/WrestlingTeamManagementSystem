@@ -211,7 +211,7 @@ namespace WrestlingManagementSystem.Logging
                 LoggerDestination destination = destinationOverride == LoggerDestination.None ? Destination : destinationOverride;
 
                 // Log to the file.
-                if ((destination & LoggerDestination.File) != 0)
+                if (destination.HasFlag(LoggerDestination.File))
                 {
                     messageBuffer.AppendLine(output);
                     if (!string.IsNullOrEmpty(messageSeperator))
@@ -221,7 +221,7 @@ namespace WrestlingManagementSystem.Logging
                 }
 
                 // Log to the console.
-                if ((destination & LoggerDestination.Output) != 0)
+                if (destination.HasFlag(LoggerDestination.Output))
                 {
                     ConsoleColor oldConsoleColor = Console.ForegroundColor;
                     Console.ForegroundColor = GetVerbosityConsoleColour(messageVerbosity);
@@ -244,7 +244,7 @@ namespace WrestlingManagementSystem.Logging
                 }
 
                 // Log using message box
-                if ((destination & LoggerDestination.Form) != 0)
+                if (destination.HasFlag(LoggerDestination.Form))
                 {
                     // The caption of the message box is either the category or assembly name.
                     string caption = string.IsNullOrEmpty(category) ? Assembly.GetEntryAssembly().GetName().Name : category;
@@ -267,7 +267,7 @@ namespace WrestlingManagementSystem.Logging
                     }
                 }
 
-                if (destination != LoggerDestination.None)
+                if (!destination.HasFlag(LoggerDestination.None))
                 {
                     OnMessageLogged(new MessagedLoggerEventArgs(message.ToString()));
                 }

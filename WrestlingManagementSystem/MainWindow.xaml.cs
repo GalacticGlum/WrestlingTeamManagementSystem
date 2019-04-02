@@ -61,10 +61,12 @@ namespace WrestlingManagementSystem
             if (openFileDialog.ShowDialog() == true)
             {
                 // TODO: Load file!
-            }
+                Team team = Team.Load(openFileDialog.FileName);
+                if (team == null) return;
 
-            MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
-            dataContext.AddTeam(new Team(Path.GetFileNameWithoutExtension(openFileDialog.FileName)));
+                MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
+                dataContext.AddTeam(team);
+            }
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace WrestlingManagementSystem
         /// <param name="args"></param>
         private void OnTeamSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+            MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
             dataContext.IsTeamSelected = TeamSelectionComboBox.SelectedItem != null;
         }
 

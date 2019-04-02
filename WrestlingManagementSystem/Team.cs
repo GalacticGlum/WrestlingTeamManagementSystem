@@ -9,7 +9,9 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
 {
@@ -135,6 +137,49 @@ namespace WrestlingManagementSystem
         {
             Name = name;
             Members = new ObservableCollection<Member>();
+        }
+
+        /// <summary>
+        /// Loads a <see cref="Team"/> from the data file at the specified <paramref name="filepath"/>.
+        /// </summary>
+        /// <param name="filepath">The path to the data file.</param>
+        /// <returns>A <see cref="Team"/> object containing the loaded data or <value>null</value> if the <see cref="Team"/> could not be loaded.</returns>
+        public static Team Load(string filepath)
+        {
+            if (!File.Exists(filepath))
+            {
+                Logger.Log(string.Empty, $"Failed to load team: data file (\"{filepath}\") does not exist.", LoggerVerbosity.Error, LoggerDestination.Form);
+                return null;
+            }
+
+            string[] lines = File.ReadAllLines(filepath);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                string[] components = line.Split(',');
+
+                // The team format consists of a set of lines where each
+                // line contains a set of comma-separated values, with the first
+                // value indicating the type of the member: "Coach" or "Wrestler"
+                switch (components[0])
+                {
+                    case "Coach":
+                        break;
+                    case "Wrestler":
+                        break;
+                    default:
+                        // If we encounter a member type that is not "Coach" or "Wrestler", let's log this encounter and the line that it occured, and then
+                        // continue reading the file. This sort of error is not very severe since it only affects a single line; that is, the rest of the data
+                        // might still be A-OK.
+                        Logger.LogFunctionEntry(string.Empty,
+                            $"Encountered unknown member type (\"{components[0]}\") while loading a team data file on line {i + 1}.\n(\"{filepath}\")",
+                            LoggerVerbosity.Warning);
+
+                        break;
+                }
+            }
+
+            return null;
         }
     }
 }
