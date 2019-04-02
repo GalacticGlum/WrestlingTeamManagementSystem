@@ -9,6 +9,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -48,8 +49,15 @@ namespace WrestlingManagementSystem
             }
         }
 
-        private readonly MainWindow mainWindowInstance;
+        /// <summary>
+        /// A collection of the paths to all the team data files that have been loaded.
+        /// <remarks>
+        /// Used for uniqueness check during the loading process.
+        /// </remarks>
+        /// </summary>
+        public HashSet<string> LoadedTeamFilepaths { get; }
 
+        private readonly MainWindow mainWindowInstance;
         private ObservableCollection<Team> teams;
         private bool isTeamSelected;
 
@@ -59,6 +67,8 @@ namespace WrestlingManagementSystem
         public MainWindowDataContext(MainWindow mainWindowInstance)
         {
             this.mainWindowInstance = mainWindowInstance;
+            LoadedTeamFilepaths = new HashSet<string>();
+
             Teams = new ObservableCollection<Team>();
         }
 

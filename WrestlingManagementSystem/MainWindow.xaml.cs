@@ -58,15 +58,21 @@ namespace WrestlingManagementSystem
                 InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
             };
 
-            if (openFileDialog.ShowDialog() == true)
-            {
-                // TODO: Load file!
-                Team team = Team.Load(openFileDialog.FileName);
-                if (team == null) return;
+            if (openFileDialog.ShowDialog() != true) return;
 
-                MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
-                dataContext.AddTeam(team);
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+            if (dataContext.LoadedTeamFilepaths.Contains(openFileDialog.FileName))
+            {
+                Logger.Log(string.Empty, "A team with this filepath has already been loaded!", LoggerVerbosity.Info, LoggerDestination.Form);
+                return;
             }
+
+            Team team = Team.Load(openFileDialog.FileName);
+            dataContext.LoadedTeamFilepaths.Add(openFileDialog.FileName);
+
+            if (team == null) return;
+
+            dataContext.AddTeam(team);
         }
 
         /// <summary>
