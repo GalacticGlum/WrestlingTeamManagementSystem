@@ -13,8 +13,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Windows;
 using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
@@ -221,85 +219,101 @@ namespace WrestlingManagementSystem
                 return null;
             }
 
-            // The name of the team is the same as the data file name without its extension.
-            Team result = new Team(Path.GetFileNameWithoutExtension(filepath));
-
-            int errorCount = 0;
-
-            string[] lines = File.ReadAllLines(filepath);
-            for (int i = 0; i < lines.Length; i++)
+            // While there are manual sanity checks during deserialization,
+            // let's wrap the deserialization procedure in a try-catch block 
+            // so that we can catch any missed exceptions. Since an exception
+            // caught by this try-catch is unexpected, if it does happen, it is
+            // treated as severe and ends the loading of the file (returns null).
+            try
             {
-                // The team format consists of a set of lines where each
-                // line contains a set of comma-separated values, with the first
-                // value indicating the type of the member: "Coach" or "Wrestler"
-                string line = lines[i];
-                string[] components = line.Split(',');
+                // The name of the team is the same as the data file name without its extension.
+                Team result = new Team(Path.GetFileNameWithoutExtension(filepath));
 
-                // Temporary error message buffer used to reduce
-                // string interning overhead
-                string errorMessage;
+                int errorCount = 0;
 
-                // Check if our line is empty or consists of no comma-separated values. 
-                // If this is the case, skip this line and continue reading the file and log
-                // the error. This is not very severe so we don't log the error to the form via
-                // message box.
-                if (components.Length == 0)
+                string[] lines = File.ReadAllLines(filepath);
+                for (int i = 0; i < lines.Length; i++)
                 {
-                    errorMessage = $"Encountered empty line on line {i + 1}.\n\n(\"{filepath}\")";
-                    Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Warning);
+                    // The team format consists of a set of lines where each
+                    // line contains a set of comma-separated values, with the first
+                    // value indicating the type of the member: "Coach" or "Wrestler"
+                    string line = lines[i];
+                    string[] components = line.Split(',');
 
-                    errorCount += 1;
-                    continue;
-                }
+                    // Temporary error message buffer used to reduce
+                    // string interning overhead
+                    string errorMessage;
 
-                string lineWithoutType = line.Substring(components[0].Length + 1);
-
-                // If we encounter a member type that is not "Coach" or "Wrestler", let's log this encounter
-                // and the line that it occured, and then continue reading the file. This sort of error is not
-                // very severe since it only affects a single line; that is, the rest of the data might still be A-OK.
-                switch (components[0])
-                {
-                    case Coach.SerializationTypeTag:
-                        Coach coach = new Coach();
-                        if (!coach.Load(lineWithoutType))
-                        {
-                            errorMessage = $"Failed to load Coach on line {i + 1}.";
-                            Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Error);
-                            errorCount += 1;
-                        }
-
-                        result.AddMember(coach);
-
-                        break;
-                    case Wrestler.SerializationTypeTag:
-                        Wrestler wrestler = new Wrestler();
-                        if (!wrestler.Load(lineWithoutType))
-                        {
-                            errorMessage = $"Failed to load Wrestler on line {i + 1}.";
-                            Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Error);
-                            errorCount += 1;
-                        }
-
-                        result.AddMember(wrestler);
-
-                        break;
-                    default:
-                        Logger.LogFunctionEntry(string.Empty, $"Encountered unknown member type (\"{components[0]}\") while " +
-                            $"loading a team data file on line {i + 1}.\n(\"{filepath}\")", 
-                            LoggerVerbosity.Warning);
+                    // Check if our line is empty or consists of no comma-separated values. 
+                    // If this is the case, skip this line and continue reading the file and log
+                    // the error. This is not very severe so we don't log the error to the form via
+                    // message box.
+                    if (components.Length == 0)
+                    {
+                        errorMessage = $"Encountered empty line on line {i + 1}.\n\n(\"{filepath}\")";
+                        Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Warning);
 
                         errorCount += 1;
-                        break;
+                        continue;
+                    }
+
+                    string lineWithoutType = line.Substring(components[0].Length + 1);
+
+                    // If we encounter a member type that is not "Coach" or "Wrestler", let's log this encounter
+                    // and the line that it occured, and then continue reading the file. This sort of error is not
+                    // very severe since it only affects a single line; that is, the rest of the data might still be A-OK.
+                    switch (components[0])
+                    {
+                        case Coach.SerializationTypeTag:
+                            Coach coach = new Coach();
+                            if (!coach.Load(lineWithoutType))
+                            {
+                                errorMessage = $"Failed to load Coach on line {i + 1}.";
+                                Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Error);
+                                errorCount += 1;
+                            }
+
+                            result.AddMember(coach);
+
+                            break;
+                        case Wrestler.SerializationTypeTag:
+                            Wrestler wrestler = new Wrestler();
+                            if (!wrestler.Load(lineWithoutType))
+                            {
+                                errorMessage = $"Failed to load Wrestler on line {i + 1}.";
+                                Logger.LogFunctionEntry(string.Empty, errorMessage, LoggerVerbosity.Error);
+                                errorCount += 1;
+                            }
+
+                            result.AddMember(wrestler);
+
+                            break;
+                        default:
+                            Logger.LogFunctionEntry(string.Empty, $"Encountered unknown member type (\"{components[0]}\") while " +
+                                $"loading a team data file on line {i + 1}.\n(\"{filepath}\")",
+                                LoggerVerbosity.Warning);
+
+                            errorCount += 1;
+                            break;
+                    }
                 }
-            }
 
-            if (errorCount > 0)
+                if (errorCount > 0)
+                {
+                    Logger.Log(string.Empty, $"{errorCount} errors while loading team!\n\nView log for more details.",
+                        LoggerVerbosity.Warning, LoggerDestination.Form);
+                }
+
+                return result;
+            }
+            catch (Exception exception)
             {
-                Logger.Log(string.Empty, $"{errorCount} errors while loading team!\n\nView log for more details.", 
-                    LoggerVerbosity.Warning, LoggerDestination.Form);
-            }
+                Logger.Log(exception.Message, LoggerVerbosity.Error);
+                Logger.Log(string.Empty, $"Caught exception while loading team. Team could not be loaded.\n\nView log for more details.", 
+                    LoggerVerbosity.Error, LoggerDestination.Form);
 
-            return result;
+                return null;
+            }
         }
     }
 }
