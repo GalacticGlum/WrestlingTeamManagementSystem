@@ -9,14 +9,8 @@
 
 using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media;
 using Microsoft.Win32;
 using WrestlingManagementSystem.Helpers;
 using WrestlingManagementSystem.Logging;
@@ -142,6 +136,7 @@ namespace WrestlingManagementSystem
             Member newMember = (Member)Activator.CreateInstance(memberTab.MemberType);
             team.AddMember(memberTab.MemberType, newMember);
 
+            // Find a child data-grid of the tab control
             DataGrid membersDataGrid = (DataGrid)MemberTypeTabControl.GetChildren().Find(control => control is DataGrid);
             membersDataGrid.SelectedItem = newMember;
             membersDataGrid.ScrollIntoView(newMember);
@@ -156,6 +151,8 @@ namespace WrestlingManagementSystem
         {
             Team team = (Team)TeamSelectionComboBox.SelectedItem;
             MemberTab memberTab = (MemberTab)MemberTypeTabControl.SelectedItem;
+
+            // Find a child data-grid of the tab control
             DataGrid membersDataGrid = (DataGrid) MemberTypeTabControl.GetChildren().Find(control => control is DataGrid);
 
             // If we haven't selecting anything in the data grid, we can't remove anything

@@ -60,28 +60,7 @@ namespace WrestlingManagementSystem
                 // Generate the member tabs
                 foreach (KeyValuePair<Type, ObservableCollection<Member>> pair in team.Members)
                 {
-                    // Retrieve all the properties in the subclass and base class Member
-                    // that are marked with the MemberPropertyAttribute.
-                    PropertyInfo[] properties = pair.Key.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                        .Where(p => p.IsDefined(typeof(MemberPropertyAttribute), false)).ToArray();
-
-                    // Sort the properties based on their order specified in the attribute.
-                    properties = properties.OrderBy(p => p.GetCustomAttribute<MemberPropertyAttribute>().Order).ToArray();
-
-                    ObservableCollection<DataGridColumn> columns = new ObservableCollection<DataGridColumn>();
-
-                    foreach (PropertyInfo propertyInfo in properties)
-                    {
-                        // Convert the pascal-case name to a proper space-separated header
-                        string properHeader = Regex.Replace(propertyInfo.Name, "(\\B[A-Z])", " $1");
-                        columns.Add(new DataGridTextColumn
-                        {
-                            Header = properHeader,
-                            Binding = new Binding(propertyInfo.Name)
-                        });
-                    }
-
-                    MemberTypeTabs.Add(new MemberTab(pair.Key.Name, pair.Key, columns, pair.Value));
+                    MemberTypeTabs.Add(new MemberTab(pair.Key.Name, pair.Key, pair.Value));
                 }
             }
         }
