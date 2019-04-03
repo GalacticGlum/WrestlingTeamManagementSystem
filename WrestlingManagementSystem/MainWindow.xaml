@@ -65,16 +65,16 @@
                         <ComboBox Name="TeamSelectionComboBox" Grid.Column="1" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Teams}" DisplayMemberPath="Name" 
                                   SelectionChanged="OnTeamSelectionChanged"/>
                         <DockPanel Grid.Column="2" LastChildFill="False">
-                            <Button Name="DeleteMemberButton" Padding="5,0,5,0" DockPanel.Dock="Right" IsEnabled="{Binding IsTeamSelected}">
+                            <Button Name="DeleteMemberButton" Padding="5,0,5,0" DockPanel.Dock="Right" IsEnabled="{Binding IsTeamSelected}" Click="OnDeleteMemberButton">
                                 Delete Member
                             </Button>
-                            <Button Name="NewRememberButton" Padding="5,0,5,0" Margin="0,0,5,0" DockPanel.Dock="Right" IsEnabled="{Binding IsTeamSelected}">
+                            <Button Name="NewRememberButton" Padding="5,0,5,0" Margin="0,0,5,0" DockPanel.Dock="Right" IsEnabled="{Binding IsTeamSelected}" Click="OnNewMemberButton">
                                 New Member
                             </Button>
                         </DockPanel>
                     </Grid>
 
-                    <wrestlingManagementSystem:TabControlExtended Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,10,0"
+                    <wrestlingManagementSystem:TabControlExtended x:Name="MemberTypeTabControl" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,10,0"
                                 ItemsSource="{Binding MemberTypeTabs}">
                         <wrestlingManagementSystem:TabControlExtended.ItemTemplate>
                             <DataTemplate DataType="wrestlingManagementSystem:MemberTab">

@@ -54,7 +54,7 @@ namespace WrestlingManagementSystem
                 Team team = (Team)mainWindowInstance.TeamSelectionComboBox.SelectedItem;
                 foreach (KeyValuePair<Type, ObservableCollection<Member>> pair in team.Members)
                 {
-                    MemberTypeTabs.Add(new MemberTab(pair.Key.Name, pair.Value));
+                    MemberTypeTabs.Add(new MemberTab(pair.Key.Name, pair.Key, pair.Value));
                 }
             }
         }

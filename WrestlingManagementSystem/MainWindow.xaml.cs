@@ -125,5 +125,36 @@ namespace WrestlingManagementSystem
         {
             args.Column.Header = Regex.Replace(args.PropertyName, "(\\B[A-Z])", " $1");
         }
+
+        /// <summary>
+        /// Handle the new member button click event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnNewMemberButton(object sender, RoutedEventArgs args)
+        {
+            if (!(MemberTypeTabControl.Template.FindName("PART_SelectedContentHost", MemberTypeTabControl) is ContentPresenter contentPresenter) || 
+                contentPresenter.ContentTemplate != MemberTypeTabControl.ContentTemplate) return;
+
+            Team team = (Team) TeamSelectionComboBox.SelectedItem;
+            MemberTab memberTab = (MemberTab) MemberTypeTabControl.SelectedItem;
+
+            Member newMember = (Member) Activator.CreateInstance(memberTab.MemberType);
+            team.AddMember(memberTab.MemberType, newMember);
+
+            DataGrid membersDataGrid =  (DataGrid) contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
+            membersDataGrid.SelectedItem = newMember;
+            membersDataGrid.ScrollIntoView(newMember);
+        }
+
+        /// <summary>
+        /// Handle the delete member button click event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnDeleteMemberButton(object sender, RoutedEventArgs args)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -167,13 +167,23 @@ namespace WrestlingManagementSystem
         /// <param name="member">The member to add.</param>
         public void AddMember<T>(T member) where T : Member
         {
-            Type type = typeof(T);
-            if (!Members.ContainsKey(type))
+            AddMember(typeof(T), member);
+        }
+
+        /// <summary>
+        /// Adds a member to this <see cref="Team"/>.
+        /// </summary>
+        /// <param name="memberType">The type of the member.</param>
+        /// <param name="member">The member to add.</param>
+        public void AddMember(Type memberType, Member member)
+        {
+            if (memberType.BaseType != typeof(Member)) return;
+            if (!Members.ContainsKey(memberType))
             {
-                Members[type] = new ObservableCollection<Member>();
+                Members[memberType] = new ObservableCollection<Member>();
             }
 
-            Members[type].Add(member);
+            Members[memberType].Add(member);
         }
 
         /// <summary>
