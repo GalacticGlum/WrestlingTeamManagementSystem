@@ -26,6 +26,7 @@ namespace WrestlingManagementSystem.Logging
     /// <param name="args"></param>
     public delegate void MessageLoggedEventHandler(MessagedLoggerEventArgs args);
 
+    /// <inheritdoc />
     /// <summary>
     /// Event args for the MessageLogged event.
     /// </summary>
@@ -36,6 +37,7 @@ namespace WrestlingManagementSystem.Logging
         /// </summary>
         public string Message { get; set; }
 
+        /// <inheritdoc />
         /// <summary>
         /// Creates a new event args with a specified message.
         /// </summary>

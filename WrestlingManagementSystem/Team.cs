@@ -3,7 +3,7 @@
  * File Name: Team.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/31/2019
- * Modified Date: 04/01/2019
+ * Modified Date: 04/03/019
  * Description: DESCRIPTION
  */
 
@@ -24,10 +24,10 @@ namespace WrestlingManagementSystem
         /// </summary>
         public string Name { get; }
 
-        ///// <summary>
-        ///// The <see cref="Member"/>s in this <see cref="Team"/>.
-        ///// </summary>
-        //public ObservableCollection<Member> Members { get; set; }
+        /// <summary>
+        /// The filepath to the team data file.
+        /// </summary>
+        public string Filepath { get; }
 
         /// <summary>
         /// The <see cref="Member"/>s in this <see cref="Team"/> mapped by <see cref="Type"/>.
@@ -143,9 +143,11 @@ namespace WrestlingManagementSystem
         /// Initializes a new <see cref="Team"/>.
         /// </summary>
         /// <param name="name">The name of the <see cref="Team"/>.</param>
-        public Team(string name)
+        /// <param name="filepath">The path to the team data file.</param>
+        public Team(string name, string filepath)
         {
             Name = name;
+            Filepath = filepath;
 
             Members = new Dictionary<Type, ObservableCollection<Member>>();
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -227,7 +229,7 @@ namespace WrestlingManagementSystem
             try
             {
                 // The name of the team is the same as the data file name without its extension.
-                Team result = new Team(Path.GetFileNameWithoutExtension(filepath));
+                Team result = new Team(Path.GetFileNameWithoutExtension(filepath), filepath);
 
                 int errorCount = 0;
 

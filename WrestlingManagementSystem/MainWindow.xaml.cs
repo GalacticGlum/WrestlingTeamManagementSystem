@@ -85,9 +85,8 @@ namespace WrestlingManagementSystem
         private void OnNewTeamMenuClicked(object sender, RoutedEventArgs args)
         {
             MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
-
-            // TODO: Make a form for new team creation that lets you choose a name and filepath
-            dataContext.AddTeam(new Team("TestName"));
+            NewTeamCreationWindow teamCreationWindow = new NewTeamCreationWindow(dataContext);
+            teamCreationWindow.Show();
         }
 
         /// <summary>
