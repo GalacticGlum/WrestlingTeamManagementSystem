@@ -3,8 +3,8 @@
  * File Name: Wrestler.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/27/2019
- * Modified Date: 04/02/2019
- * Description: DESCRIPTION
+ * Modified Date: 04/03/2019
+ * Description: The wrestler data class.
  */
 
 using System;
@@ -19,6 +19,9 @@ using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
 {
+    /// <summary>
+    /// The wrestler data class.
+    /// </summary>
     public class Wrestler : Member
     {
         /// <summary>
@@ -32,6 +35,10 @@ namespace WrestlingManagementSystem
         private const int SerializationParameterLength = 14;
 
         private static Dictionary<Gender, WeightCategoryCollection> weightCategoriesCache;
+
+        /// <summary>
+        /// Retrieve all the weight categories mapped to gender.
+        /// </summary>
         private static Dictionary<Gender, WeightCategoryCollection> WeightCategories
         {
             get
@@ -70,33 +77,80 @@ namespace WrestlingManagementSystem
             }
         }
 
+        /// <summary>
+        /// The date of birth of this <see cref="Wrestler"/>.
+        /// </summary>
         [MemberProperty(7)]
         public DateTime Birthdate { get; set; }
 
+        /// <summary>
+        /// Retrieves this <see cref="Wrestler"/>'s birthdate as a formatted string.
+        /// </summary>
+        /// <remarks>
+        /// The format is MM/dd/yyyy
+        /// </remarks>
+        public string BirthdateFormatted => $"{Birthdate:MM/dd/yyyy}";
+
+        /// <summary>
+        /// The weight of this <see cref="Wrestler"/>.
+        /// </summary>
         [MemberProperty(8)]
         public float Weight { get; set; }
 
+        /// <summary>
+        /// The number of wins for this <see cref="Wrestler"/>.
+        /// </summary>
         [MemberProperty(10)]
         public int Wins { get; set; }
 
+        /// <summary>
+        /// The number of losses for this <see cref="Wrestler"/>.
+        /// </summary>
         [MemberProperty(11)]
         public int Losses { get; set; }
 
+        /// <summary>
+        /// The number of wins by pin (technique) for this <see cref="Wrestler"/>.
+        /// </summary>
         [MemberProperty(12)]
         public int WinsByPin { get; set; }
 
+        /// <summary>
+        /// The total number of points achieved by this <see cref="Wrestler"/>.
+        /// </summary>
         [MemberProperty(13)]
         public int TotalPoints { get; set; }
 
+        /// <summary>
+        /// The status of this <see cref="Wrestler"/>.
+        /// </summary>
         [MemberProperty(14)]
         public WrestlerStatus Status { get; set; }
 
+        /// <summary>
+        /// Whether this <see cref="Wrestler"/> signed out a uniform.
+        /// </summary>
         [MemberProperty(15)]
         public bool IsUnfiformSignedOut { get; set; }
 
+        /// <summary>
+        /// The total number of matches fought by this <see cref="Wrestler"/>.
+        /// </summary>
         public int TotalMatches => Wins + Losses;
+
+        /// <summary>
+        /// The percentage of wins to total matches by this <see cref="Wrestler"/>.
+        /// </summary>
         public float WinPercentage => Wins / (float)TotalMatches * 100.0f;
+
+        /// <summary>
+        /// The percentage of losses to total matches by this <see cref="Wrestler"/>.
+        /// </summary>
         public float LossPercentage => Losses / (float)TotalMatches * 100.0f;
+
+        /// <summary>
+        /// The average points per match for this <see cref="Wrestler"/>.
+        /// </summary>
         public float AverageMatchPoints => TotalPoints / (float)TotalMatches;
 
         /// <summary>
@@ -132,6 +186,31 @@ namespace WrestlingManagementSystem
             }
         }
 
+        /// <summary>
+        /// Retrieves the attributes that will be serialized.
+        /// </summary>
+        public override object[] GetSerializedAttributes()
+        {
+            List<object> attributes = base.GetSerializedAttributes().ToList();
+            attributes.AddRange(new object[]
+            {
+                BirthdateFormatted, Weight, WeightCategory, Wins,
+                Losses, TotalPoints, WinsByPin, Status, IsUnfiformSignedOut
+            });
+
+            return attributes.ToArray();
+        }
+
+        /// <summary>
+        /// Load a <see cref="Wrestler"/> from a set of comma-separated values.
+        /// </summary>
+        /// <remarks>
+        /// The format consists of n attributes separated by a comma: "attribute1,attribute2,...,attributeN"
+        /// </remarks>
+        /// <param name="data">The comma-separated <see cref="Wrestler"/> data.</param>
+        /// <returns>
+        /// A boolean indicating the result of the load.
+        /// </returns>
         public override bool Load(string data)
         {
             if (!base.Load(data)) return false;

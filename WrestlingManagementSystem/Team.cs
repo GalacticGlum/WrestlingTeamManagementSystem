@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
@@ -199,6 +200,32 @@ namespace WrestlingManagementSystem
         {
             if (!Members.ContainsKey(memberType)) return;
             Members[memberType].Remove(member);
+        }
+
+        /// <summary>
+        /// Saves a <see cref="Team"/> to its data file.
+        /// </summary>
+        public void Save()
+        {
+            try
+            {
+                StringBuilder serializedOutputBuffer = new StringBuilder();
+                foreach (KeyValuePair<Type, ObservableCollection<Member>> pair in Members)
+                {
+                    foreach (Member member in pair.Value)
+                    {
+                        serializedOutputBuffer.AppendLine(member.Save());
+                    }
+                }
+
+                File.WriteAllText(Filepath, serializedOutputBuffer.ToString());
+            }
+            catch (Exception exception)
+            {
+                Logger.Log(exception.Message, LoggerVerbosity.Error);
+                Logger.Log(string.Empty, $"Caught exception while saving team. Team could not be saved.\n\nView log for more details.",
+                    LoggerVerbosity.Error, LoggerDestination.Form);
+            }
         }
 
         /// <summary>

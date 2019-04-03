@@ -7,6 +7,8 @@
  * Description: DESCRIPTION
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
@@ -18,6 +20,9 @@ namespace WrestlingManagementSystem
         /// </summary>
         public const string SerializationTypeTag = "Coach";
 
+        /// <summary>
+        /// The type of <see cref="Coach"/>.
+        /// </summary>
         [MemberProperty(7)]
         public CoachType Type { get; set; }
 
@@ -41,6 +46,17 @@ namespace WrestlingManagementSystem
         public Coach(string firstName, string lastName, Gender gender, string school, int yearsOfExperience) : 
             base(firstName, lastName, gender, school, yearsOfExperience)
         {
+        }
+
+        /// <summary>
+        /// Retrieves the attributes that will be serialized.
+        /// </summary>
+        public override object[] GetSerializedAttributes()
+        {
+            List<object> attributes = base.GetSerializedAttributes().ToList();
+            attributes.AddRange(new object[] {Type});
+
+            return attributes.ToArray();
         }
 
         /// <inheritdoc />

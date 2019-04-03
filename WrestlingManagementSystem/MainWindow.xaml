@@ -21,7 +21,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="New Team" Click="OnNewTeamMenuClicked"/>
                 <MenuItem Header="Open Team" Click="OnOpenTeamMenuClicked"/>
-                <MenuItem Header="Save Team" />
+                <MenuItem Header="Save Team" Click="OnSaveTeamMenuClicked" IsEnabled="{Binding IsTeamSelected}" />
                 <MenuItem Header="Close Team" Click="OnCloseTeamMenuClicked" IsEnabled="{Binding IsTeamSelected}" />
                 <Separator />
                 <MenuItem Header="Recent Teams"/>

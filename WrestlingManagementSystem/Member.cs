@@ -3,8 +3,8 @@
  * File Name: Member.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/27/2019
- * Modified Date: 04/01/2019
- * Description: DESCRIPTION
+ * Modified Date: 04/03/2019
+ * Description: The base-class for all members.
  */
 
 using System;
@@ -12,20 +12,38 @@ using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
 {
+    /// <summary>
+    /// The base-class for all members.
+    /// </summary>
     public class Member
     {
+        /// <summary>
+        /// The first name of this <see cref="Member"/>.
+        /// </summary>
         [MemberProperty(1)]
         public string FirstName { get; set; }
 
+        /// <summary>
+        /// The last name of this <see cref="Member"/>.
+        /// </summary>
         [MemberProperty(2)]
         public string LastName { get; set; }
 
+        /// <summary>
+        /// The gender of this <see cref="Member"/>.
+        /// </summary>
         [MemberProperty(3)]
         public Gender Gender { get; set; }
 
+        /// <summary>
+        /// The school that this <see cref="Member"/> is a part of.
+        /// </summary>
         [MemberProperty(4)]
         public string School { get; set; }
 
+        /// <summary>
+        /// The amount of years of experience that this <see cref="Member"/> has.
+        /// </summary>
         [MemberProperty(5)]
         public int YearsOfExperience { get; set; }
 
@@ -55,6 +73,16 @@ namespace WrestlingManagementSystem
             School = school;
             YearsOfExperience = yearsOfExperience;
         }
+
+        /// <summary>
+        /// Retrieves the attributes that will be serialized.
+        /// </summary>
+        public virtual object[] GetSerializedAttributes() => new object[] {LastName, FirstName, Gender, School, YearsOfExperience};
+
+        /// <summary>
+        /// Serializes this <see cref="Member"/> into a set of comma-separated values.
+        /// </summary>
+        public string Save() => string.Join(",", GetType().Name, string.Join(",", GetSerializedAttributes()));
 
         /// <summary>
         /// Load a <see cref="Member"/> from a set of comma-separated values.

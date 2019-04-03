@@ -63,6 +63,17 @@ namespace WrestlingManagementSystem
         }
 
         /// <summary>
+        /// Handles the save team event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnSaveTeamMenuClicked(object sender, RoutedEventArgs args)
+        {
+            Team team = (Team)TeamSelectionComboBox.SelectedItem;
+            team.Save();
+        }
+
+        /// <summary>
         /// Loads a <see cref="Team"/> from file and updates the UI.
         /// </summary>
         /// <param name="filepath">The path to the <see cref="Team"/> data file.</param>
