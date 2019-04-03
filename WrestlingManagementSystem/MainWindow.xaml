@@ -29,8 +29,8 @@
                 <MenuItem Header="Exit" Click="OnExitMenuClicked" />
             </MenuItem>
             <MenuItem Header="Edit">
-                <MenuItem Header="Add Member" Click="OnNewMemberButton" />
-                <MenuItem Header="Remove Member" Click="OnDeleteMemberButton" />
+                <MenuItem Header="Add Member" Click="OnNewMemberButton" IsEnabled="{Binding IsTeamSelected}" />
+                <MenuItem Header="Delete Member" Click="OnDeleteMemberButton" IsEnabled="{Binding IsTeamSelected}" />
             </MenuItem>
             <MenuItem Header="View">
             </MenuItem>
