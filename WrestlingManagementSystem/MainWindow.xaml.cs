@@ -70,20 +70,33 @@ namespace WrestlingManagementSystem
         }
 
         /// <summary>
+        /// Handle the new team menu item clicked event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnNewTeamMenuClicked(object sender, RoutedEventArgs args)
+        {
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+
+            // TODO: Make a form for new team creation that lets you choose a name and filepath
+            dataContext.AddTeam(new Team("TestName"));
+        }
+
+        /// <summary>
         /// Handle the closed team menu clicked event. This deletes the currently selected team.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         private void OnCloseTeamMenuClicked(object sender, RoutedEventArgs args)
         {
-            MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
-            Team selectedTeam = (Team) TeamSelectionComboBox.SelectedItem;
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+            Team selectedTeam = (Team)TeamSelectionComboBox.SelectedItem;
             int selectedTeamIndex = TeamSelectionComboBox.SelectedIndex;
 
             dataContext.Teams.Remove(selectedTeam);
 
             if (dataContext.Teams.Count == 0) return;
-            TeamSelectionComboBox.SelectedItem = (Team) TeamSelectionComboBox.Items[selectedTeamIndex - 1];
+            TeamSelectionComboBox.SelectedItem = (Team)TeamSelectionComboBox.Items[selectedTeamIndex - 1];
         }
 
         /// <summary>
@@ -93,7 +106,7 @@ namespace WrestlingManagementSystem
         /// <param name="args"></param>
         private void OnTeamSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
             dataContext.IsTeamSelected = TeamSelectionComboBox.SelectedItem != null;
         }
 
@@ -111,7 +124,7 @@ namespace WrestlingManagementSystem
         /// <param name="args"></param>
         private void OnMemberDataGridPreviewMouseWheel(object sender, MouseWheelEventArgs args)
         {
-            ScrollViewer scrollViewer = (ScrollViewer) sender;
+            ScrollViewer scrollViewer = (ScrollViewer)sender;
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - args.Delta);
             args.Handled = true;
         }
@@ -127,22 +140,36 @@ namespace WrestlingManagementSystem
         }
 
         /// <summary>
+        /// Retrieves the currently selected <see cref="ContentPresenter"/> from the member <see cref="TabControl"/> content template.
+        /// </summary>
+        /// <returns></returns>
+        private ContentPresenter GetCurrentMemberTabContent()
+        {
+            // Verify the content presenter.
+            if (!(MemberTypeTabControl.Template.FindName("PART_SelectedContentHost", MemberTypeTabControl) is ContentPresenter contentPresenter) ||
+                contentPresenter.ContentTemplate != MemberTypeTabControl.ContentTemplate) return null;
+
+            return contentPresenter;
+
+        }
+
+        /// <summary>
         /// Handle the new member button click event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         private void OnNewMemberButton(object sender, RoutedEventArgs args)
         {
-            if (!(MemberTypeTabControl.Template.FindName("PART_SelectedContentHost", MemberTypeTabControl) is ContentPresenter contentPresenter) || 
-                contentPresenter.ContentTemplate != MemberTypeTabControl.ContentTemplate) return;
+            ContentPresenter contentPresenter = GetCurrentMemberTabContent();
+            if (contentPresenter == null) return;
 
-            Team team = (Team) TeamSelectionComboBox.SelectedItem;
-            MemberTab memberTab = (MemberTab) MemberTypeTabControl.SelectedItem;
+            Team team = (Team)TeamSelectionComboBox.SelectedItem;
+            MemberTab memberTab = (MemberTab)MemberTypeTabControl.SelectedItem;
 
-            Member newMember = (Member) Activator.CreateInstance(memberTab.MemberType);
+            Member newMember = (Member)Activator.CreateInstance(memberTab.MemberType);
             team.AddMember(memberTab.MemberType, newMember);
 
-            DataGrid membersDataGrid = (DataGrid) contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
+            DataGrid membersDataGrid = (DataGrid)contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
             membersDataGrid.SelectedItem = newMember;
             membersDataGrid.ScrollIntoView(newMember);
         }
@@ -154,18 +181,18 @@ namespace WrestlingManagementSystem
         /// <param name="args"></param>
         private void OnDeleteMemberButton(object sender, RoutedEventArgs args)
         {
-            if (!(MemberTypeTabControl.Template.FindName("PART_SelectedContentHost", MemberTypeTabControl) is ContentPresenter contentPresenter) ||
-                contentPresenter.ContentTemplate != MemberTypeTabControl.ContentTemplate) return;
+            ContentPresenter contentPresenter = GetCurrentMemberTabContent();
+            if (contentPresenter == null) return;
 
             Team team = (Team)TeamSelectionComboBox.SelectedItem;
             MemberTab memberTab = (MemberTab)MemberTypeTabControl.SelectedItem;
-            DataGrid membersDataGrid = (DataGrid) contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
+            DataGrid membersDataGrid = (DataGrid)contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
 
             // If we haven't selecting anything in the data grid, we can't remove anything
             if (membersDataGrid.SelectedItem == null) return;
 
             int currentSelectedIndex = membersDataGrid.SelectedIndex;
-            team.RemoveMember(memberTab.MemberType, (Member) membersDataGrid.SelectedItem);
+            team.RemoveMember(memberTab.MemberType, (Member)membersDataGrid.SelectedItem);
 
             if (currentSelectedIndex == membersDataGrid.Items.Count)
             {

@@ -18,7 +18,7 @@
         </DockPanel.Background>
         <Menu DockPanel.Dock="Top" Background="White" BorderThickness="0,0,0,1">
             <MenuItem Header="File">
-                <MenuItem Header="New Team" />
+                <MenuItem Header="New Team" Click="OnNewTeamMenuClicked"/>
                 <MenuItem Header="Open Team" Click="OnOpenTeamMenuClicked"/>
                 <MenuItem Header="Save Team" />
                 <MenuItem Header="Close Team" Click="OnCloseTeamMenuClicked" IsEnabled="{Binding IsTeamSelected}" />
@@ -28,6 +28,8 @@
                 <MenuItem Header="Exit" Click="OnExitMenuClicked" />
             </MenuItem>
             <MenuItem Header="Edit">
+                <MenuItem Header="Add Member" Click="OnNewMemberButton" />
+                <MenuItem Header="Remove Member" Click="OnDeleteMemberButton" />
             </MenuItem>
             <MenuItem Header="View">
             </MenuItem>

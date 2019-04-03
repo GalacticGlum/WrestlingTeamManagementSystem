@@ -20,7 +20,6 @@ namespace WrestlingManagementSystem
 
         public CoachType Type { get; set; }
 
-        /// <inheritdoc />
         /// <summary>
         /// Initializes an empty <see cref="Coach"/>.
         /// </summary>
