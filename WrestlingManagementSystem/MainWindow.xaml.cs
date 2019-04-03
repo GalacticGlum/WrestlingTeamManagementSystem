@@ -142,7 +142,7 @@ namespace WrestlingManagementSystem
             Member newMember = (Member) Activator.CreateInstance(memberTab.MemberType);
             team.AddMember(memberTab.MemberType, newMember);
 
-            DataGrid membersDataGrid =  (DataGrid) contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
+            DataGrid membersDataGrid = (DataGrid) contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
             membersDataGrid.SelectedItem = newMember;
             membersDataGrid.ScrollIntoView(newMember);
         }
@@ -154,7 +154,25 @@ namespace WrestlingManagementSystem
         /// <param name="args"></param>
         private void OnDeleteMemberButton(object sender, RoutedEventArgs args)
         {
-            throw new NotImplementedException();
+            if (!(MemberTypeTabControl.Template.FindName("PART_SelectedContentHost", MemberTypeTabControl) is ContentPresenter contentPresenter) ||
+                contentPresenter.ContentTemplate != MemberTypeTabControl.ContentTemplate) return;
+
+            Team team = (Team)TeamSelectionComboBox.SelectedItem;
+            MemberTab memberTab = (MemberTab)MemberTypeTabControl.SelectedItem;
+            DataGrid membersDataGrid = (DataGrid) contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
+
+            // If we haven't selecting anything in the data grid, we can't remove anything
+            if (membersDataGrid.SelectedItem == null) return;
+
+            int currentSelectedIndex = membersDataGrid.SelectedIndex;
+            team.RemoveMember(memberTab.MemberType, (Member) membersDataGrid.SelectedItem);
+
+            if (currentSelectedIndex == membersDataGrid.Items.Count)
+            {
+                currentSelectedIndex -= 1;
+            }
+
+            membersDataGrid.SelectedIndex = currentSelectedIndex;
         }
     }
 }

@@ -85,7 +85,7 @@
                             <DataTemplate DataType="wrestlingManagementSystem:MemberTab">
                                 <ScrollViewer PreviewMouseWheel="OnMemberDataGridPreviewMouseWheel" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                                     <DataGrid Name="MembersDataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Data}" HeadersVisibility="All"
-                                              wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader" BorderThickness="0"
+                                              wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="FullRow" BorderThickness="0"
                                               CanUserSortColumns="False" IsReadOnly="True" AutoGeneratingColumn="OnMemberAutoGenerateColumn">
                                         <DataGrid.CellStyle>
                                             <Style TargetType="DataGridCell">

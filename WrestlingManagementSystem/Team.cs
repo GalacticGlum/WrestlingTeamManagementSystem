@@ -165,10 +165,7 @@ namespace WrestlingManagementSystem
         /// </summary>
         /// <typeparam name="T">The type of the member.</typeparam>
         /// <param name="member">The member to add.</param>
-        public void AddMember<T>(T member) where T : Member
-        {
-            AddMember(typeof(T), member);
-        }
+        public void AddMember<T>(T member) where T : Member => AddMember(typeof(T), member);
 
         /// <summary>
         /// Adds a member to this <see cref="Team"/>.
@@ -191,11 +188,17 @@ namespace WrestlingManagementSystem
         /// </summary>
         /// <typeparam name="T">The type of the member.</typeparam>
         /// <param name="member">The member to add.</param>
-        public void RemoveMember<T>(T member) where T : Member
+        public void RemoveMember<T>(T member) where T : Member => RemoveMember(typeof(T), member);
+
+        /// <summary>
+        /// Remove a member from this <see cref="Team"/>.
+        /// </summary>
+        /// <param name="memberType">The type of the member.</param>
+        /// <param name="member">The member to add.</param>
+        public void RemoveMember(Type memberType, Member member)
         {
-            Type type = typeof(T);
-            if (!Members.ContainsKey(type)) return;
-            Members[type].Remove(member);
+            if (!Members.ContainsKey(memberType)) return;
+            Members[memberType].Remove(member);
         }
 
         /// <summary>
