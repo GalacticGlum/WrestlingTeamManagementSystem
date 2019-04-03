@@ -37,7 +37,8 @@ namespace WrestlingManagementSystem
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             if (item == null) return null;
-            MemberTab memberTab = (MemberTab)item;
+            dynamic memberTab = item;
+            Type memberTabType = memberTab.MemberType;
 
             FrameworkElementFactory scrollViewerFactory = new FrameworkElementFactory(typeof(ScrollViewer));
             scrollViewerFactory.AddHandler(UIElement.PreviewMouseWheelEvent, new MouseWheelEventHandler(OnPreviewMouseWheel));
@@ -64,13 +65,17 @@ namespace WrestlingManagementSystem
             dataGridFactory.AddHandler(FrameworkElement.LoadedEvent, new RoutedEventHandler((sender, routedEventArgs) =>
             {
                 // Generate the columns of the data grid when it is loaded.
-                DataGrid dataGrid = (DataGrid)routedEventArgs.Source;
+                DataGrid dataGrid = (DataGrid)routedEventArgs?.Source;
+                if (dataGrid == null) return;
+
                 dataGrid.Columns.Clear();
 
                 // Retrieve all the properties in the subclass and base class Member
                 // that are marked with the MemberPropertyAttribute.
-                PropertyInfo[] properties = memberTab.MemberType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                PropertyInfo[] properties = memberTabType?.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Where(p => p.IsDefined(typeof(MemberPropertyAttribute), false)).ToArray();
+
+                if (properties == null) return;
 
                 // Sort the properties based on their order specified in the attribute.
                 properties = properties.OrderBy(p => p.GetCustomAttribute<MemberPropertyAttribute>().Order).ToArray();
