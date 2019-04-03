@@ -59,6 +59,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataGridBehaviour.cs" />
+    <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggerDestination.cs" />
     <Compile Include="Logging\LoggerVerbosity.cs" />
@@ -71,6 +72,7 @@
     </Compile>
     <Compile Include="TabControlExtended.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="MemberTabControlContentTemplateSelector.cs" />
     <Compile Include="Wrestler.cs" />
     <Compile Include="WrestlerStatus.cs" />
     <Compile Include="WeightCategoryCollection.cs" />

@@ -8,7 +8,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -17,7 +16,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using Microsoft.Win32;
+using WrestlingManagementSystem.Helpers;
 using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
@@ -129,48 +130,19 @@ namespace WrestlingManagementSystem
         private void OnExitMenuClicked(object sender, RoutedEventArgs args) => Application.Current.Shutdown();
 
         /// <summary>
-        /// Handles the <see cref="ScrollViewer"/> preview mouse wheel event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        private void OnMemberDataGridPreviewMouseWheel(object sender, MouseWheelEventArgs args)
-        {
-            ScrollViewer scrollViewer = (ScrollViewer)sender;
-            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - args.Delta);
-            args.Handled = true;
-        }
-
-        /// <summary>
-        /// Retrieves the currently selected <see cref="ContentPresenter"/> from the member <see cref="TabControl"/> content template.
-        /// </summary>
-        /// <returns></returns>
-        public ContentPresenter GetCurrentMemberTabContent()
-        {
-            // Verify the content presenter.
-            if (!(MemberTypeTabControl.Template.FindName("PART_SelectedContentHost", MemberTypeTabControl) is ContentPresenter contentPresenter) ||
-                contentPresenter.ContentTemplate != MemberTypeTabControl.ContentTemplate) return null;
-
-            return contentPresenter;
-
-        }
-
-        /// <summary>
         /// Handle the new member button click event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         private void OnNewMemberButton(object sender, RoutedEventArgs args)
         {
-            ContentPresenter contentPresenter = GetCurrentMemberTabContent();
-            if (contentPresenter == null) return;
-
             Team team = (Team)TeamSelectionComboBox.SelectedItem;
             MemberTab memberTab = (MemberTab)MemberTypeTabControl.SelectedItem;
 
             Member newMember = (Member)Activator.CreateInstance(memberTab.MemberType);
             team.AddMember(memberTab.MemberType, newMember);
 
-            DataGrid membersDataGrid = (DataGrid)contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
+            DataGrid membersDataGrid = (DataGrid)MemberTypeTabControl.GetChildren().Find(control => control is DataGrid);
             membersDataGrid.SelectedItem = newMember;
             membersDataGrid.ScrollIntoView(newMember);
         }
@@ -182,12 +154,9 @@ namespace WrestlingManagementSystem
         /// <param name="args"></param>
         private void OnDeleteMemberButton(object sender, RoutedEventArgs args)
         {
-            ContentPresenter contentPresenter = GetCurrentMemberTabContent();
-            if (contentPresenter == null) return;
-
             Team team = (Team)TeamSelectionComboBox.SelectedItem;
             MemberTab memberTab = (MemberTab)MemberTypeTabControl.SelectedItem;
-            DataGrid membersDataGrid = (DataGrid)contentPresenter.ContentTemplate.FindName("MembersDataGrid", contentPresenter);
+            DataGrid membersDataGrid = (DataGrid) MemberTypeTabControl.GetChildren().Find(control => control is DataGrid);
 
             // If we haven't selecting anything in the data grid, we can't remove anything
             if (membersDataGrid.SelectedItem == null) return;
@@ -218,36 +187,6 @@ namespace WrestlingManagementSystem
             foreach (string filepath in filepaths)
             {
                 LoadTeamFromFile(filepath);
-            }
-        }
-
-        /// <summary>
-        /// Handle the member datagrid loaded event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        private void OnMembersDataGridLoaded(object sender, RoutedEventArgs args)
-        {
-            DataGrid dataGrid = (DataGrid) args.Source;
-            Type memberType = (Type) dataGrid.Tag;
-
-            // Retrieve all the properties in the subclass and base class Member
-            // that are marked with the MemberPropertyAttribute.
-            PropertyInfo[] properties = memberType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p => p.IsDefined(typeof(MemberPropertyAttribute), false)).ToArray();
-                
-            // Sort the properties based on their order specified in the attribute.
-            properties = properties.OrderBy(p => p.GetCustomAttribute<MemberPropertyAttribute>().Order).ToArray();
-
-            foreach (PropertyInfo propertyInfo in properties)
-            {
-                // Convert the pascal-case name to a proper space-separated header
-                string properHeader = Regex.Replace(propertyInfo.Name, "(\\B[A-Z])", " $1");
-                dataGrid.Columns.Add(new DataGridTextColumn
-                {
-                    Header = properHeader,
-                    Binding = new Binding(propertyInfo.Name)
-                });
             }
         }
     }

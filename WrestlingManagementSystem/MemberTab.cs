@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace WrestlingManagementSystem
 {
@@ -28,6 +29,11 @@ namespace WrestlingManagementSystem
         public Type MemberType { get; set; }
 
         /// <summary>
+        /// A collection of the column data in the tab data grid.
+        /// </summary>
+        public ObservableCollection<DataGridColumn> Columns { get; }
+
+        /// <summary>
         /// A collection of the data in this <see cref="MemberTab"/>.
         /// </summary>
         public ObservableCollection<Member> Data { get; }
@@ -37,12 +43,14 @@ namespace WrestlingManagementSystem
         /// </summary>
         /// <param name="header">The header text of this <see cref="MemberTab"/>.</param>
         /// <param name="type">The type of the <see cref="Member"/> subclass.</param>
+        /// <param name="columns">A collection of the column data in the tab data grid.</param>
         /// <param name="data">A collection of the data in this <see cref="MemberTab"/>.</param>
-        public MemberTab(string header, Type type, ObservableCollection<Member> data)
+        public MemberTab(string header, Type type, ObservableCollection<DataGridColumn> columns, ObservableCollection<Member> data)
         {
             Header = header;
             MemberType = type;
             Data = data;
+            Columns = columns;
         }
     }
 }

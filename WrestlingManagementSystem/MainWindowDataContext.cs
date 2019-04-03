@@ -12,8 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace WrestlingManagementSystem
 {
@@ -51,11 +55,33 @@ namespace WrestlingManagementSystem
                 MemberTypeTabs.Clear();
                 if (!isTeamSelected) return;
 
-                // Generate the member tabs
                 Team team = (Team)mainWindowInstance.TeamSelectionComboBox.SelectedItem;
+
+                // Generate the member tabs
                 foreach (KeyValuePair<Type, ObservableCollection<Member>> pair in team.Members)
                 {
-                    MemberTypeTabs.Add(new MemberTab(pair.Key.Name, pair.Key, pair.Value));
+                    // Retrieve all the properties in the subclass and base class Member
+                    // that are marked with the MemberPropertyAttribute.
+                    PropertyInfo[] properties = pair.Key.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                        .Where(p => p.IsDefined(typeof(MemberPropertyAttribute), false)).ToArray();
+
+                    // Sort the properties based on their order specified in the attribute.
+                    properties = properties.OrderBy(p => p.GetCustomAttribute<MemberPropertyAttribute>().Order).ToArray();
+
+                    ObservableCollection<DataGridColumn> columns = new ObservableCollection<DataGridColumn>();
+
+                    foreach (PropertyInfo propertyInfo in properties)
+                    {
+                        // Convert the pascal-case name to a proper space-separated header
+                        string properHeader = Regex.Replace(propertyInfo.Name, "(\\B[A-Z])", " $1");
+                        columns.Add(new DataGridTextColumn
+                        {
+                            Header = properHeader,
+                            Binding = new Binding(propertyInfo.Name)
+                        });
+                    }
+
+                    MemberTypeTabs.Add(new MemberTab(pair.Key.Name, pair.Key, columns, pair.Value));
                 }
             }
         }
