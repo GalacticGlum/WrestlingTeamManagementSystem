@@ -3,15 +3,15 @@
  * File Name: MainWindow.xaml.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/26/2019
- * Modified Date: 04/01/2019
+ * Modified Date: 04/02/2019
  * Description: Interaction logic for MainWindow.xaml
  */
 
 using System;
 using System.ComponentModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Microsoft.Win32;
 using WrestlingManagementSystem.Logging;
 
@@ -102,5 +102,17 @@ namespace WrestlingManagementSystem
         /// <param name="sender"></param>
         /// <param name="args"></param>
         private void OnExitMenuClicked(object sender, RoutedEventArgs args) => Application.Current.Shutdown();
+
+        /// <summary>
+        /// Handles the <see cref="ScrollViewer"/> preview mouse wheel event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnMemberDataGridPreviewMouseWheel(object sender, MouseWheelEventArgs args)
+        {
+            ScrollViewer scrollViewer = (ScrollViewer) sender;
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - args.Delta);
+            args.Handled = true;
+        }
     }
 }

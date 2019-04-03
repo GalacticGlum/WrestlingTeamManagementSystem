@@ -8,9 +8,11 @@
  *              It is notified when data is changed and updates data accordingly.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace WrestlingManagementSystem
@@ -45,6 +47,18 @@ namespace WrestlingManagementSystem
             {
                 isTeamSelected = value;
                 OnPropertyChanged();
+
+                if (!isTeamSelected) return;
+
+                // Generate the member tabs
+                MemberTypeTabs.Clear();
+
+                Team team = (Team)mainWindowInstance.TeamSelectionComboBox.SelectedItem;
+                foreach (KeyValuePair<Type, ObservableCollection<Member>> pair in team.Members)
+                {
+                    if (pair.Value.Count == 0) continue;
+                    MemberTypeTabs.Add(new MemberTab(pair.Key.Name, pair.Value));
+                }
             }
         }
 
@@ -52,6 +66,11 @@ namespace WrestlingManagementSystem
         /// A collection of the paths to all the team data files that have recently been loaded.
         /// </summary>
         public HashSet<string> RecentLoadedTeamFilepaths { get; }
+
+        /// <summary>
+        /// A collection of the <see cref="MemberTab"/>s.
+        /// </summary>
+        public ObservableCollection<MemberTab> MemberTypeTabs { get; }
 
         private readonly MainWindow mainWindowInstance;
         private ObservableCollection<Team> teams;
@@ -66,6 +85,7 @@ namespace WrestlingManagementSystem
             RecentLoadedTeamFilepaths = new HashSet<string>();
 
             Teams = new ObservableCollection<Team>();
+            MemberTypeTabs = new ObservableCollection<MemberTab>();
         }
 
         /// <inheritdoc />

@@ -73,7 +73,34 @@
                         </DockPanel>
                     </Grid>
 
-                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                    <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,10,0"
+                                ItemsSource="{Binding MemberTypeTabs}">
+                        <TabControl.ItemTemplate>
+                            <DataTemplate DataType="wrestlingManagementSystem:MemberTab">
+                                <TextBlock Text="{Binding Header}" />
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                            <DataTemplate DataType="wrestlingManagementSystem:MemberTab">
+                                <ScrollViewer PreviewMouseWheel="OnMemberDataGridPreviewMouseWheel">
+                                    <StackPanel ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                        <DataGrid Name="MembersDataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Data}" HeadersVisibility="All"
+                                                  wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader" BorderThickness="0" 
+                                                  Visibility="{Binding HasItems, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=MembersDataGrid, Mode=OneWay}">
+                                            <DataGrid.HorizontalGridLinesBrush>
+                                                <SolidColorBrush Color="#D8D8D8" />
+                                            </DataGrid.HorizontalGridLinesBrush>
+                                            <DataGrid.VerticalGridLinesBrush>
+                                                <SolidColorBrush Color="#D8D8D8" />
+                                            </DataGrid.VerticalGridLinesBrush>
+                                        </DataGrid>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
+
+                    <!--<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     Margin="10,0,10,0" BorderThickness="1" CornerRadius="1" Grid.RowSpan="2">
                         <Border.BorderBrush>
                             <SolidColorBrush Color="#828790" />
@@ -92,7 +119,7 @@
                                 </DataGrid>
                             </StackPanel>
                         </ScrollViewer>
-                    </Border>
+                    </Border>-->
                 </Grid>
             </Border>
         </Grid>

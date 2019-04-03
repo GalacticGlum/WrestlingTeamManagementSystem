@@ -25,10 +25,18 @@ namespace WrestlingManagementSystem
         /// </summary>
         public string Name { get; }
 
+        ///// <summary>
+        ///// The <see cref="Member"/>s in this <see cref="Team"/>.
+        ///// </summary>
+        //public ObservableCollection<Member> Members { get; set; }
+
         /// <summary>
-        /// The <see cref="Member"/>s in this <see cref="Team"/>.
+        /// The <see cref="Member"/>s in this <see cref="Team"/> mapped by <see cref="Type"/>.
+        /// <remarks>
+        /// This structure allows us to easily retrieve all <see cref="Member"/>s of a specific type.
+        /// </remarks>
         /// </summary>
-        public ObservableCollection<Member> Members { get; set; }
+        public Dictionary<Type, ObservableCollection<Member>> Members { get; set; }
 
         /// <summary>
         /// Retrieves the number of <see cref="Wrestler"/> members on this <see cref="Team"/>.
@@ -72,7 +80,7 @@ namespace WrestlingManagementSystem
         /// </summary>
         /// <typeparam name="T">The type of the <see cref="Member"/> subclass.</typeparam>
         /// <returns></returns>
-        public IEnumerable<Member> GetMembersOfType<T>() where T : Member => Members.Where(member => member is T);
+        public IEnumerable<Member> GetMembersOfType<T>() where T : Member => Members.ContainsKey(typeof(T)) ? Members[typeof(T)] : null;
 
         /// <summary>
         /// Retrieves the number of members on this <see cref="Team"/> of type <typeparamref name="T"/>.
@@ -139,7 +147,35 @@ namespace WrestlingManagementSystem
         public Team(string name)
         {
             Name = name;
-            Members = new ObservableCollection<Member>();
+            Members = new Dictionary<Type, ObservableCollection<Member>>();
+        }
+
+        /// <summary>
+        /// Adds a member to this <see cref="Team"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the member.</typeparam>
+        /// <param name="member">The member to add.</param>
+        public void AddMember<T>(T member) where T : Member
+        {
+            Type type = typeof(T);
+            if (!Members.ContainsKey(type))
+            {
+                Members[type] = new ObservableCollection<Member>();
+            }
+
+            Members[type].Add(member);
+        }
+
+        /// <summary>
+        /// Remove a member from this <see cref="Team"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the member.</typeparam>
+        /// <param name="member">The member to add.</param>
+        public void RemoveMember<T>(T member) where T : Member
+        {
+            Type type = typeof(T);
+            if (!Members.ContainsKey(type)) return;
+            Members[type].Remove(member);
         }
 
         /// <summary>
@@ -209,7 +245,7 @@ namespace WrestlingManagementSystem
                             errorCount += 1;
                         }
 
-                        result.Members.Add(coach);
+                        result.AddMember(coach);
 
                         break;
                     case Wrestler.SerializationTypeTag:
@@ -221,7 +257,7 @@ namespace WrestlingManagementSystem
                             errorCount += 1;
                         }
 
-                        result.Members.Add(wrestler);
+                        result.AddMember(wrestler);
 
                         break;
                     default:
