@@ -70,16 +70,28 @@ namespace WrestlingManagementSystem
             }
         }
 
+        [MemberProperty(7)]
         public DateTime Birthdate { get; set; }
+
+        [MemberProperty(8)]
         public float Weight { get; set; }
 
+        [MemberProperty(10)]
         public int Wins { get; set; }
+
+        [MemberProperty(11)]
+        public int Losses { get; set; }
+
+        [MemberProperty(12)]
         public int WinsByPin { get; set; }
 
-        public int Losses { get; set; }
+        [MemberProperty(13)]
         public int TotalPoints { get; set; }
 
+        [MemberProperty(14)]
         public WrestlerStatus Status { get; set; }
+
+        [MemberProperty(15)]
         public bool IsUnfiformSignedOut { get; set; }
 
         public int TotalMatches => Wins + Losses;
@@ -90,6 +102,7 @@ namespace WrestlingManagementSystem
         /// <summary>
         /// The weight category of this <see cref="Wrestler"/>.
         /// </summary>
+        [MemberProperty(9)]
         public float WeightCategory
         {
             get

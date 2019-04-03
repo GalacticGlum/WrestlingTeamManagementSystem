@@ -64,6 +64,7 @@
     <Compile Include="Logging\LoggerVerbosity.cs" />
     <Compile Include="MainWindowDataContext.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
+    <Compile Include="MemberPropertyAttribute.cs" />
     <Compile Include="MemberTab.cs" />
     <Compile Include="NewTeamCreationWindow.xaml.cs">
       <DependentUpon>NewTeamCreationWindow.xaml</DependentUpon>

@@ -18,6 +18,7 @@ namespace WrestlingManagementSystem
         /// </summary>
         public const string SerializationTypeTag = "Coach";
 
+        [MemberProperty(7)]
         public CoachType Type { get; set; }
 
         /// <summary>

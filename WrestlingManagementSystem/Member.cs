@@ -14,11 +14,19 @@ namespace WrestlingManagementSystem
 {
     public class Member
     {
+        [MemberProperty(1)]
         public string FirstName { get; set; }
+
+        [MemberProperty(2)]
         public string LastName { get; set; }
+
+        [MemberProperty(3)]
         public Gender Gender { get; set; }
 
+        [MemberProperty(4)]
         public string School { get; set; }
+
+        [MemberProperty(5)]
         public int YearsOfExperience { get; set; }
 
         /// <summary>
