@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ * File Name: DataGridBehaviour.cs
+ * Project Name: WrestlingManagementSystem
+ * Creation Date: 03/31/2019
+ * Modified Date: 03/31/2019
+ * Description: A DataGrid extension class that adds row numbers to the row header column.
+ * Source: https://stackoverflow.com/a/4663799/7614083
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +16,9 @@ using System.Windows.Media;
 
 namespace WrestlingManagementSystem
 {
+    /// <summary>
+    /// A <see cref="DataGrid"/> extension class that adds row numbers to the row header column.
+    /// </summary>
     public class DataGridBehavior
     {
         #region DisplayRowNumber

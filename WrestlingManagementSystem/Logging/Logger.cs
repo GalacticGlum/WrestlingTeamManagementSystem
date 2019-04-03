@@ -16,7 +16,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
-using WrestlingManagementSystem.Engine;
+using WrestlingManagementSystem.Helpers;
 
 namespace WrestlingManagementSystem.Logging
 {

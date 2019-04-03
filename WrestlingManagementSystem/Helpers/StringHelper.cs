@@ -9,7 +9,7 @@
 
 using System.Linq;
 
-namespace WrestlingManagementSystem.Engine
+namespace WrestlingManagementSystem.Helpers
 {
     /// <summary>
     /// Collection of useful string related functionality.

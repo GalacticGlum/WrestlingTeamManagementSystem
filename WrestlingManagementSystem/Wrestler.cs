@@ -3,7 +3,7 @@
  * File Name: Wrestler.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/27/2019
- * Modified Date: 04/01/2019
+ * Modified Date: 04/02/2019
  * Description: DESCRIPTION
  */
 
