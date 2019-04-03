@@ -40,8 +40,9 @@
                 <ColumnDefinition Width="75*" />
                 <ColumnDefinition Width="25*" />
             </Grid.ColumnDefinitions>
-            <Border Margin="10" Background="White" BorderThickness="1" CornerRadius="1" 
-                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
+            <Border Name="MainPanel" Margin="10" Background="White" BorderThickness="1" CornerRadius="1" 
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0" 
+                    Drop="OnMainPanelDrop" AllowDrop="True">
                 <Border.BorderBrush>
                     <SolidColorBrush Color="#D8D8D8" />
                 </Border.BorderBrush>

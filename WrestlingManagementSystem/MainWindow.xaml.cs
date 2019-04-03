@@ -60,12 +60,20 @@ namespace WrestlingManagementSystem
             };
 
             if (openFileDialog.ShowDialog() != true) return;
+            LoadTeamFromFile(openFileDialog.FileName);
+        }
 
-            Team team = Team.Load(openFileDialog.FileName);
+        /// <summary>
+        /// Loads a <see cref="Team"/> from file and updates the UI.
+        /// </summary>
+        /// <param name="filepath">The path to the <see cref="Team"/> data file.</param>
+        private void LoadTeamFromFile(string filepath)
+        {
+            Team team = Team.Load(filepath);
             if (team == null) return;
 
-            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
-            dataContext.RecentLoadedTeamFilepaths.Add(openFileDialog.FileName);
+            MainWindowDataContext dataContext = (MainWindowDataContext) DataContext;
+            dataContext.RecentLoadedTeamFilepaths.Add(filepath);
             dataContext.AddTeam(team);
         }
 
@@ -200,6 +208,24 @@ namespace WrestlingManagementSystem
             }
 
             membersDataGrid.SelectedIndex = currentSelectedIndex;
+        }
+
+        /// <summary>
+        /// Handle drop event on main panel. This event supports file dropping into the window
+        /// (an alternative method for loading teams via file drag-and-drop).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnMainPanelDrop(object sender, DragEventArgs args)
+        {
+            if (!args.Data.GetDataPresent(DataFormats.FileDrop)) return;
+            string[] filepaths = (string[]) args.Data.GetData(DataFormats.FileDrop);
+            if (filepaths == null) return;
+
+            foreach (string filepath in filepaths)
+            {
+                LoadTeamFromFile(filepath);
+            }
         }
     }
 }

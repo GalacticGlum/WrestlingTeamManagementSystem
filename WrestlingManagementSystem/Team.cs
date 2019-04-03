@@ -295,7 +295,8 @@ namespace WrestlingManagementSystem
 
             if (errorCount > 0)
             {
-                Logger.Log(string.Empty, $"{errorCount} errors while loading team!\n\nView log for more details.", LoggerVerbosity.Error, LoggerDestination.Form);
+                Logger.Log(string.Empty, $"{errorCount} errors while loading team!\n\nView log for more details.", 
+                    LoggerVerbosity.Warning, LoggerDestination.Form);
             }
 
             return result;
