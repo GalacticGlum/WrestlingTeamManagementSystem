@@ -11,6 +11,7 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
+    
     <DockPanel>
         <DockPanel.Background>
             <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
@@ -73,53 +74,47 @@
                         </DockPanel>
                     </Grid>
 
-                    <TabControl Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,10,0"
+                    <wrestlingManagementSystem:TabControlExtended Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,10,0"
                                 ItemsSource="{Binding MemberTypeTabs}">
-                        <TabControl.ItemTemplate>
+                        <wrestlingManagementSystem:TabControlExtended.ItemTemplate>
                             <DataTemplate DataType="wrestlingManagementSystem:MemberTab">
                                 <TextBlock Text="{Binding Header}" />
                             </DataTemplate>
-                        </TabControl.ItemTemplate>
-                        <TabControl.ContentTemplate>
+                        </wrestlingManagementSystem:TabControlExtended.ItemTemplate>
+                        <wrestlingManagementSystem:TabControlExtended.ContentTemplate>
                             <DataTemplate DataType="wrestlingManagementSystem:MemberTab">
-                                <ScrollViewer PreviewMouseWheel="OnMemberDataGridPreviewMouseWheel">
-                                    <StackPanel ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                        <DataGrid Name="MembersDataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Data}" HeadersVisibility="All"
-                                                  wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader" BorderThickness="0" 
-                                                  Visibility="{Binding HasItems, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=MembersDataGrid, Mode=OneWay}">
-                                            <DataGrid.HorizontalGridLinesBrush>
-                                                <SolidColorBrush Color="#D8D8D8" />
-                                            </DataGrid.HorizontalGridLinesBrush>
-                                            <DataGrid.VerticalGridLinesBrush>
-                                                <SolidColorBrush Color="#D8D8D8" />
-                                            </DataGrid.VerticalGridLinesBrush>
-                                        </DataGrid>
-                                    </StackPanel>
+                                <ScrollViewer PreviewMouseWheel="OnMemberDataGridPreviewMouseWheel" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                    <DataGrid Name="MembersDataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Data}" HeadersVisibility="All"
+                                              wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader" BorderThickness="0"
+                                              CanUserSortColumns="False" IsReadOnly="True" AutoGeneratingColumn="OnMemberAutoGenerateColumn"
+                                              Visibility="{Binding HasItems, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=MembersDataGrid, Mode=OneWay}">
+                                        <DataGrid.CellStyle>
+                                            <Style TargetType="DataGridCell">
+                                                <Setter Property="Padding" Value="0,0,20,0"/>
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                                            <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                    BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" 
+                                                                    SnapsToDevicePixels="True">
+                                                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </DataGrid.CellStyle>
+                                        <DataGrid.HorizontalGridLinesBrush>
+                                            <SolidColorBrush Color="#D8D8D8" />
+                                        </DataGrid.HorizontalGridLinesBrush>
+                                        <DataGrid.VerticalGridLinesBrush>
+                                            <SolidColorBrush Color="#D8D8D8" />
+                                        </DataGrid.VerticalGridLinesBrush>
+                                    </DataGrid>
                                 </ScrollViewer>
                             </DataTemplate>
-                        </TabControl.ContentTemplate>
-                    </TabControl>
-
-                    <!--<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                    Margin="10,0,10,0" BorderThickness="1" CornerRadius="1" Grid.RowSpan="2">
-                        <Border.BorderBrush>
-                            <SolidColorBrush Color="#828790" />
-                        </Border.BorderBrush>
-                        <ScrollViewer>
-                            <StackPanel ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                <DataGrid Name="MembersDataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding TestData}" HeadersVisibility="All"
-                                      wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader" BorderThickness="0" 
-                                          Visibility="{Binding HasItems, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=MembersDataGrid, Mode=OneWay}">
-                                    <DataGrid.HorizontalGridLinesBrush>
-                                        <SolidColorBrush Color="#D8D8D8" />
-                                    </DataGrid.HorizontalGridLinesBrush>
-                                    <DataGrid.VerticalGridLinesBrush>
-                                        <SolidColorBrush Color="#D8D8D8" />
-                                    </DataGrid.VerticalGridLinesBrush>
-                                </DataGrid>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Border>-->
+                        </wrestlingManagementSystem:TabControlExtended.ContentTemplate>
+                    </wrestlingManagementSystem:TabControlExtended>
                 </Grid>
             </Border>
         </Grid>

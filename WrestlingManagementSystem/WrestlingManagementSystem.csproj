@@ -65,6 +65,7 @@
     <Compile Include="MainWindowDataContext.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="MemberTab.cs" />
+    <Compile Include="TabControlExtended.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Wrestler.cs" />
     <Compile Include="WrestlerStatus.cs" />

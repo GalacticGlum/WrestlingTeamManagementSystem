@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -113,6 +114,16 @@ namespace WrestlingManagementSystem
             ScrollViewer scrollViewer = (ScrollViewer) sender;
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - args.Delta);
             args.Handled = true;
+        }
+
+        /// <summary>
+        /// Handle the member <see cref="DataGrid"/> column auto-generation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnMemberAutoGenerateColumn(object sender, DataGridAutoGeneratingColumnEventArgs args)
+        {
+            args.Column.Header = Regex.Replace(args.PropertyName, "(\\B[A-Z])", " $1");
         }
     }
 }
