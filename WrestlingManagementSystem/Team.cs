@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using WrestlingManagementSystem.Logging;
@@ -147,7 +148,16 @@ namespace WrestlingManagementSystem
         public Team(string name)
         {
             Name = name;
+
             Members = new Dictionary<Type, ObservableCollection<Member>>();
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if(type.BaseType != typeof(Member)) continue;
+                    Members[type] = new ObservableCollection<Member>();
+                }
+            }
         }
 
         /// <summary>

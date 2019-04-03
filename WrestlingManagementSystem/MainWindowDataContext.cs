@@ -47,15 +47,13 @@ namespace WrestlingManagementSystem
                 isTeamSelected = value;
                 OnPropertyChanged();
 
+                MemberTypeTabs.Clear();
                 if (!isTeamSelected) return;
 
                 // Generate the member tabs
-                MemberTypeTabs.Clear();
-
                 Team team = (Team)mainWindowInstance.TeamSelectionComboBox.SelectedItem;
                 foreach (KeyValuePair<Type, ObservableCollection<Member>> pair in team.Members)
                 {
-                    if (pair.Value.Count == 0) continue;
                     MemberTypeTabs.Add(new MemberTab(pair.Key.Name, pair.Value));
                 }
             }

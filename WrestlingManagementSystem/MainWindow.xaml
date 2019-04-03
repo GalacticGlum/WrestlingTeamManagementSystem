@@ -86,8 +86,7 @@
                                 <ScrollViewer PreviewMouseWheel="OnMemberDataGridPreviewMouseWheel" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                                     <DataGrid Name="MembersDataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Data}" HeadersVisibility="All"
                                               wrestlingManagementSystem:DataGridBehavior.DisplayRowNumber="True" SelectionUnit="CellOrRowHeader" BorderThickness="0"
-                                              CanUserSortColumns="False" IsReadOnly="True" AutoGeneratingColumn="OnMemberAutoGenerateColumn"
-                                              Visibility="{Binding HasItems, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=MembersDataGrid, Mode=OneWay}">
+                                              CanUserSortColumns="False" IsReadOnly="True" AutoGeneratingColumn="OnMemberAutoGenerateColumn">
                                         <DataGrid.CellStyle>
                                             <Style TargetType="DataGridCell">
                                                 <Setter Property="Padding" Value="0,0,20,0"/>
