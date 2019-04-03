@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -56,6 +57,7 @@ namespace WrestlingManagementSystem
             dataGridFactory.SetValue(DataGrid.HeadersVisibilityProperty, DataGridHeadersVisibility.All);
             dataGridFactory.SetValue(DataGridBehavior.DisplayRowNumberProperty, true);
             dataGridFactory.SetValue(DataGrid.SelectionUnitProperty, DataGridSelectionUnit.FullRow);
+            dataGridFactory.SetValue(DataGrid.SelectionModeProperty, DataGridSelectionMode.Single);
             dataGridFactory.SetValue(Control.BorderThicknessProperty, new Thickness(0));
             dataGridFactory.SetValue(DataGrid.CanUserSortColumnsProperty, false);
             dataGridFactory.SetValue(DataGrid.IsReadOnlyProperty, true);
@@ -70,29 +72,23 @@ namespace WrestlingManagementSystem
 
                 dataGrid.Columns.Clear();
 
-                // Retrieve all the properties in the subclass and base class Member
-                // that are marked with the MemberPropertyAttribute.
-                PropertyInfo[] properties = memberTabType?.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(p => p.IsDefined(typeof(MemberPropertyAttribute), false)).ToArray();
-
-                if (properties == null) return;
-
-                // Sort the properties based on their order specified in the attribute.
-                properties = properties.OrderBy(p => p.GetCustomAttribute<MemberPropertyAttribute>().Order).ToArray();
-
-                foreach (PropertyInfo propertyInfo in properties)
+                foreach (PropertyInfo propertyInfo in GetMemberAttributes(memberTabType))
                 {
+                    MemberPropertyAttribute attribute = propertyInfo.GetCustomAttribute<MemberPropertyAttribute>();
+
                     // Convert the pascal-case name to a proper space-separated header
                     string properHeader = Regex.Replace(propertyInfo.Name, "(\\B[A-Z])", " $1");
                     dataGrid.Columns.Add(new DataGridTextColumn
                     {
                         Header = properHeader,
-                        Binding = new Binding(propertyInfo.Name)
+                        Binding = new Binding(string.IsNullOrEmpty(attribute.OverrideBindingPath) ? propertyInfo.Name : attribute.OverrideBindingPath)
                     });
                 }
             }));
 
-            // Initialize the grid line colours of the data grid.
+            dataGridFactory.AddHandler(Selector.SelectionChangedEvent, new SelectionChangedEventHandler(OnSelectionChangedEvent));
+
+            // Initialize the grid line colour of the data grid.
             SolidColorBrush gridLineBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D8D8D8"));
             dataGridFactory.SetValue(DataGrid.HorizontalGridLinesBrushProperty, gridLineBrush);
             dataGridFactory.SetValue(DataGrid.VerticalGridLinesBrushProperty, gridLineBrush);
@@ -101,6 +97,32 @@ namespace WrestlingManagementSystem
             {
                 VisualTree = scrollViewerFactory
             };
+        }
+
+        /// <summary>
+        /// Handle the selection changed event for the data grid.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private static void OnSelectionChangedEvent(object sender, SelectionChangedEventArgs args)
+        {
+            MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
+            if (mainWindow == null) return;
+
+            // Either way we need to clear the inspector stack panel.
+            mainWindow.InspectorStackPanel.Children.Clear();
+
+            // If there are no added items, we are deselecting something.
+            if (args.AddedItems.Count == 0) return;
+
+            Member member = (Member) args.AddedItems[0];
+            foreach (PropertyInfo propertyInfo in GetMemberAttributes(member.GetType()))
+            {
+                mainWindow.InspectorStackPanel.Children.Add(new Label
+                {
+                    Content = propertyInfo.Name + " - " + propertyInfo.GetValue(member)
+                });
+            }
         }
 
         /// <summary>
@@ -113,6 +135,19 @@ namespace WrestlingManagementSystem
             ScrollViewer scrollViewer = (ScrollViewer)sender;
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - args.Delta);
             args.Handled = true;
+        }
+
+        /// <summary>
+        /// Retrieve all the properties in the subclass and base class <see cref="Member"/> that are marked with the MemberPropertyAttribute.
+        /// </summary>
+        /// <param name="memberType">The type of the <see cref="Member"/> subclass.</param>
+        private static PropertyInfo[] GetMemberAttributes(Type memberType)
+        {        
+            PropertyInfo[] properties = memberType?.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.IsDefined(typeof(MemberPropertyAttribute), false)).ToArray();
+
+            // Sort the properties based on their order specified in the attribute.
+            return properties?.OrderBy(p => p.GetCustomAttribute<MemberPropertyAttribute>().Order).ToArray();
         }
     }
 }

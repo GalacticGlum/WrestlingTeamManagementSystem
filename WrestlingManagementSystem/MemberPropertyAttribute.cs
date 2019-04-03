@@ -16,17 +16,24 @@ namespace WrestlingManagementSystem
     public class MemberPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Specifies the order of the property in the datagrid columns.
+        /// Specifies the order of the property in the data grid columns.
         /// </summary>
         public int Order { get; }
 
         /// <summary>
-        /// Initializesa  new <see cref="MemberPropertyAttribute"/>.
+        /// Overrides the data grid binding path of this <see cref="MemberPropertyAttribute"/>.
         /// </summary>
-        /// <param name="order">The order of this <see cref="MemberPropertyAttribute"/> in the datagrid columns.</param>
-        public MemberPropertyAttribute(int order = 0)
+        public string OverrideBindingPath { get; }
+
+        /// <summary>
+        /// Initializes a  new <see cref="MemberPropertyAttribute"/>.
+        /// </summary>
+        /// <param name="order">The order of this <see cref="MemberPropertyAttribute"/> in the data grid columns.</param>
+        /// <param name="overrideBindingPath">Overrides the data grid binding path of this <see cref="MemberPropertyAttribute"/>.</param>
+        public MemberPropertyAttribute(int order = 0, string overrideBindingPath = null)
         {
             Order = order;
+            OverrideBindingPath = overrideBindingPath;
         }
     }
 }
