@@ -96,8 +96,8 @@
             <Grid Column="1" Margin="10">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="60*" />
-                        <RowDefinition Height="40*" />
+                        <RowDefinition Height="55*" />
+                        <RowDefinition Height="45*" />
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" BorderThickness="1" CornerRadius="1" 
@@ -138,7 +138,9 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Border Grid.Row="0" BorderThickness="0,0,0,1">
                                 <Border.BorderBrush>
@@ -147,6 +149,28 @@
 
                                 <Label FontWeight="Bold">Filter</Label>
                             </Border>
+                            <Border Grid.Row="1" BorderThickness="0,0,0,1">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="#D8D8D8" />
+                                </Border.BorderBrush>
+                                <StackPanel>
+                                    <Label FontWeight="Bold">Search by Name</Label>
+                                    <TextBox Margin="5" Name="SearchTextbox" />
+                                </StackPanel>
+                            </Border>
+                            <StackPanel Grid.Row="2">
+                                <Label FontWeight="Bold">Sort</Label>
+                                <Separator Background="#D8D8D8" />
+                                <StackPanel Margin="10">
+                                    <Label FontWeight="Bold">Type</Label>
+                                    <ComboBox />
+                                </StackPanel>
+                                <StackPanel Margin="10">
+                                    <Label FontWeight="Bold">Property</Label>
+                                    <ComboBox />
+                                </StackPanel>
+                            </StackPanel>
+                            <Button Grid.Row="3" Margin="10">Filter</Button>
                         </Grid>
                     </Border>
                 </Grid>
