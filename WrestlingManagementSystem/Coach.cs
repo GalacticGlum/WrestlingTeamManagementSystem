@@ -4,7 +4,7 @@
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/27/2019
  * Modified Date: 04/03/2019
- * Description: DESCRIPTION
+ * Description: The coach data class.
  */
 
 using System.Collections.Generic;
@@ -13,6 +13,9 @@ using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
 {
+    /// <summary>
+    /// The coach data class.
+    /// </summary>
     public class Coach : Member
     {
         /// <summary>
