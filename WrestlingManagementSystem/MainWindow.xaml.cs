@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -304,13 +303,18 @@ namespace WrestlingManagementSystem
             object SortSelector(Member element) => filterProperty.GetValue(element, null);
             IEnumerable<Member> filterData = sortAscending ? tab.Data.OrderBy(SortSelector) : tab.Data.OrderByDescending(SortSelector);
 
-            if (!string.IsNullOrEmpty(SearchTextbox.Text))
+            string nameQuery = SearchTextbox.Text.ToLower();
+            if (!string.IsNullOrEmpty(nameQuery))
             {
-
+                // Check if the first name, last name, first + last name, or last + first name contain the query string
+                filterData = filterData.Where(element => element.FirstName.ToLower().Contains(nameQuery) 
+                    || element.LastName.ToLower().Contains(nameQuery)
+                    || string.Join(" ", element.LastName, element.FirstName).ToLower().Contains(nameQuery)
+                    || string.Join(" ", element.FirstName, element.LastName).ToLower().Contains(nameQuery));
             }
 
             DataGrid membersDataGrid = (DataGrid)MemberTypeTabControl.GetChildren().Find(control => control is DataGrid);
-            membersDataGrid.ItemsSource = filterData;
+            membersDataGrid.ItemsSource = filterData;   
         }
 
         /// <summary>
