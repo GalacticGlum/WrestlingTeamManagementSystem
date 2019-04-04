@@ -207,13 +207,6 @@ namespace WrestlingManagementSystem
         /// <summary>
         /// Remove a member from this <see cref="Team"/>.
         /// </summary>
-        /// <typeparam name="T">The type of the member.</typeparam>
-        /// <param name="member">The member to add.</param>
-        public void RemoveMember<T>(T member) where T : Member => RemoveMember(typeof(T), member);
-
-        /// <summary>
-        /// Remove a member from this <see cref="Team"/>.
-        /// </summary>
         /// <param name="memberType">The type of the member.</param>
         /// <param name="member">The member to add.</param>
         public void RemoveMember(Type memberType, Member member)
