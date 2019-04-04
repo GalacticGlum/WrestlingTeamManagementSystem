@@ -117,9 +117,16 @@ namespace WrestlingManagementSystem
             if (mainWindow == null) return;
 
             mainWindow.ResetInspector();
+            MainWindowDataContext dataContext = (MainWindowDataContext)mainWindow.DataContext;
 
             // If there are no added items, we are deselecting something.
-            if (args.AddedItems.Count == 0) return;
+            if (args.AddedItems.Count == 0)
+            {
+                dataContext.IsMemberSelected = false;
+                return;
+            }
+
+            dataContext.IsMemberSelected = true;
 
             Member member = (Member) args.AddedItems[0];
             if (member == null) return;

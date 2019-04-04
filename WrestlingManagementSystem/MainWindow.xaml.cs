@@ -132,6 +132,10 @@ namespace WrestlingManagementSystem
         {
             MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
             dataContext.IsTeamSelected = TeamSelectionComboBox.SelectedItem != null;
+            if (!dataContext.IsTeamSelected)
+            {
+                dataContext.IsMemberSelected = false;
+            }
 
             ResetInspector();
 

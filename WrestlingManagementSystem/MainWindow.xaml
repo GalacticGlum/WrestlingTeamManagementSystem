@@ -96,12 +96,13 @@
             <Grid Column="1" Margin="10">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="60*" />
+                        <RowDefinition Height="40*" />
                     </Grid.RowDefinitions>
 
                     <Border Grid.Row="0" BorderThickness="1" CornerRadius="1" 
-                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            IsEnabled="{Binding IsTeamSelected}">
                         <Border.BorderBrush>
                             <SolidColorBrush Color="#D8D8D8" />
                         </Border.BorderBrush>
@@ -120,14 +121,32 @@
                             <ScrollViewer Grid.Row="1" CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                                           Visibility="{Binding IsTeamSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <DockPanel>
-                                    <StackPanel DockPanel.Dock="Top">
+                                    <StackPanel DockPanel.Dock="Top" Visibility="{Binding IsMemberSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Label FontWeight="Bold">Type</Label>
                                         <ComboBox Name="TypeSelectionComboBox" SelectionChanged="OnTypeSelectionChanged" DisplayMemberPath="Name" />
                                     </StackPanel>
                                     <StackPanel DockPanel.Dock="Top" Name="InspectorStackPanel" VerticalAlignment="Stretch" />
                                 </DockPanel>
-                                
                             </ScrollViewer>
+                        </Grid>
+                    </Border>
+                    <Border Margin="0,10,0,0" Grid.Row="1" BorderThickness="1" CornerRadius="1"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="{Binding IsTeamSelected}">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#D8D8D8" />
+                        </Border.BorderBrush>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" BorderThickness="0,0,0,1">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="#D8D8D8" />
+                                </Border.BorderBrush>
+
+                                <Label FontWeight="Bold">Filter</Label>
+                            </Border>
                         </Grid>
                     </Border>
                 </Grid>

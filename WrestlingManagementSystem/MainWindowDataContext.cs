@@ -61,6 +61,19 @@ namespace WrestlingManagementSystem
         }
 
         /// <summary>
+        /// Indicates whether a <see cref="Member"/> is currently selected.
+        /// </summary>
+        public bool IsMemberSelected
+        {
+            get => isMemberSelected;
+            set
+            {
+                isMemberSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// A collection of the paths to all the team data files that have recently been loaded.
         /// </summary>
         public HashSet<string> RecentLoadedTeamFilepaths { get; }
@@ -73,6 +86,7 @@ namespace WrestlingManagementSystem
         private readonly MainWindow mainWindowInstance;
         private ObservableCollection<Team> teams;
         private bool isTeamSelected;
+        private bool isMemberSelected;
 
         /// <summary>
         /// Initializes a new <see cref="MainWindowDataContext"/>.
