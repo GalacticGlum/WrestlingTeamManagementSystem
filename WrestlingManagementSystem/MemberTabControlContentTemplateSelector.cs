@@ -73,8 +73,10 @@ namespace WrestlingManagementSystem
                 if (dataGrid == null) return;
 
                 dataGrid.Columns.Clear();
+                IEnumerable<PropertyInfo> memberAttributes = GetMemberAttributes(memberTabType);
+                if (memberAttributes == null) return;
 
-                foreach (PropertyInfo propertyInfo in GetMemberAttributes(memberTabType))
+                foreach (PropertyInfo propertyInfo in memberAttributes)
                 {
                     MemberPropertyAttribute attribute = propertyInfo.GetCustomAttribute<MemberPropertyAttribute>();
                     Binding binding = new Binding(string.IsNullOrEmpty(attribute.OverrideBindingPath) ? propertyInfo.Name : attribute.OverrideBindingPath);
@@ -121,7 +123,10 @@ namespace WrestlingManagementSystem
             if (args.AddedItems.Count == 0) return;
 
             Member member = (Member) args.AddedItems[0];
-            foreach (PropertyInfo propertyInfo in GetMemberAttributes(member.GetType()))
+            IEnumerable<PropertyInfo> memberAttributes = GetMemberAttributes(member?.GetType());
+            if (memberAttributes == null) return;
+
+            foreach (PropertyInfo propertyInfo in memberAttributes)
             {
                 MemberPropertyAttribute attribute = propertyInfo.GetCustomAttribute<MemberPropertyAttribute>();
                 InspectorInput inspectorInput = new InspectorInput
@@ -146,7 +151,6 @@ namespace WrestlingManagementSystem
                     // A one-way binding simply gets the property in the UI.
                     // A readonly property cannot be bound two-way since it can't
                     // be set.
-
                     binding.Mode = BindingMode.OneWay;
                     inputWidget.SetBinding(ContentControl.ContentProperty, binding);
                 }
