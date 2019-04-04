@@ -15,13 +15,38 @@ using System.Windows.Data;
 
 namespace WrestlingManagementSystem
 {
+    /// <summary>
+    /// A single row entry of the breakdown table.
+    /// </summary>
     public struct TeamStatisticsBreakdownEntry
     {
+        /// <summary>
+        /// The weight category of this <see cref="TeamStatisticsBreakdownEntry"/>.
+        /// </summary>
         public float WeightCategory { get; }
+
+        /// <summary>
+        /// The number of all wrestlers in this category.
+        /// </summary>
         public int AllCount { get; }
+
+        /// <summary>
+        /// The number of male wrestlers in this category.
+        /// </summary>
         public int MaleCount { get; }
+
+        /// <summary>
+        /// The number of female wrestlers in this category.
+        /// </summary>
         public int FemaleCount { get; }
 
+        /// <summary>
+        /// Initialize a new <see cref="TeamStatisticsBreakdownEntry"/>.
+        /// </summary>
+        /// <param name="weightCategory">The weight category of this <see cref="TeamStatisticsBreakdownEntry"/>.</param>
+        /// <param name="allCount">The number of all wrestlers in this category.</param>
+        /// <param name="maleCount">The number of male wrestlers in this category.</param>
+        /// <param name="femaleCount">The number of female wrestlers in this category.</param>
         public TeamStatisticsBreakdownEntry(float weightCategory, int allCount, int maleCount, int femaleCount)
         {
             WeightCategory = weightCategory;
