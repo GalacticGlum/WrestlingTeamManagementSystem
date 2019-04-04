@@ -245,7 +245,6 @@ namespace WrestlingManagementSystem
 
             // No change in type means that we don't need to do anything
             if (newType == member.GetType()) return;
-
             Team team = (Team)TeamSelectionComboBox.SelectedItem;
 
             // Remove the member from the old type and move it to the new type collection in the team member map
