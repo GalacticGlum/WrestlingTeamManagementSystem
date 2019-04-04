@@ -80,7 +80,7 @@ namespace WrestlingManagementSystem
         /// <summary>
         /// The date of birth of this <see cref="Wrestler"/>.
         /// </summary>
-        [MemberProperty(7, "BirthdateFormatted")]
+        [MemberProperty(7, "BirthdateFormatted", isReadonly: true)]
         public DateTime Birthdate { get; set; }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace WrestlingManagementSystem
         /// <summary>
         /// The weight category of this <see cref="Wrestler"/>.
         /// </summary>
-        [MemberProperty(9)]
+        [MemberProperty(9, isReadonly: true)]
         public float WeightCategory
         {
             get

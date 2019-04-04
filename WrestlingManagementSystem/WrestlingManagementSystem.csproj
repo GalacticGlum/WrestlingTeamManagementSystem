@@ -59,7 +59,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataGridBehaviour.cs" />
+    <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="InspectorInput.xaml.cs">
+      <DependentUpon>InspectorInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggerDestination.cs" />
     <Compile Include="Logging\LoggerVerbosity.cs" />
@@ -76,6 +80,10 @@
     <Compile Include="Wrestler.cs" />
     <Compile Include="WrestlerStatus.cs" />
     <Compile Include="WeightCategoryCollection.cs" />
+    <Page Include="InspectorInput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,6 +123,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

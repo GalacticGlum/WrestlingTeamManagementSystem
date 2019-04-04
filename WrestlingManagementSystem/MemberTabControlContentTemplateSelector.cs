@@ -8,6 +8,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -17,6 +18,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using WrestlingManagementSystem.Helpers;
 
 namespace WrestlingManagementSystem
 {
@@ -75,12 +77,9 @@ namespace WrestlingManagementSystem
                 foreach (PropertyInfo propertyInfo in GetMemberAttributes(memberTabType))
                 {
                     MemberPropertyAttribute attribute = propertyInfo.GetCustomAttribute<MemberPropertyAttribute>();
-
-                    // Convert the pascal-case name to a proper space-separated header
-                    string properHeader = Regex.Replace(propertyInfo.Name, "(\\B[A-Z])", " $1");
                     dataGrid.Columns.Add(new DataGridTextColumn
                     {
-                        Header = properHeader,
+                        Header = GetProperPropertyName(propertyInfo),
                         Binding = new Binding(string.IsNullOrEmpty(attribute.OverrideBindingPath) ? propertyInfo.Name : attribute.OverrideBindingPath)
                     });
                 }
@@ -118,10 +117,88 @@ namespace WrestlingManagementSystem
             Member member = (Member) args.AddedItems[0];
             foreach (PropertyInfo propertyInfo in GetMemberAttributes(member.GetType()))
             {
-                mainWindow.InspectorStackPanel.Children.Add(new Label
+                MemberPropertyAttribute attribute = propertyInfo.GetCustomAttribute<MemberPropertyAttribute>();
+                InspectorInput inspectorInput = new InspectorInput
                 {
-                    Content = propertyInfo.Name + " - " + propertyInfo.GetValue(member)
-                });
+                    InputName = GetProperPropertyName(propertyInfo)
+                };
+
+                // Use the type of the property to generate the input widget
+                Control inputWidget;
+
+                string bindingPath = string.IsNullOrEmpty(attribute.OverrideBindingPath) ? propertyInfo.Name : attribute.OverrideBindingPath;
+                Binding binding = new Binding(bindingPath);
+
+                if (attribute.IsReadonly)
+                {
+                    // A readonly attribute is simply a label with its value.
+                    inputWidget = new Label
+                    {
+                        DataContext = member
+                    };
+
+                    // A one-way binding simply gets the property in the UI.
+                    // A readonly property cannot be bound two-way since it can't
+                    // be set.
+
+                    binding.Mode = BindingMode.OneWay;
+                    inputWidget.SetBinding(ContentControl.ContentProperty, binding);
+                }
+                else
+                {
+                    // Numeric and string types use a text box
+                    // We must make sure the type is NOT an enum since an enum is type of numeric.
+                    if (propertyInfo.PropertyType == typeof(string) || propertyInfo.PropertyType.IsNumericType() && !propertyInfo.PropertyType.IsEnum)
+                    {
+                        inputWidget = new TextBox
+                        {
+                            DataContext = member
+                        };
+
+                        inputWidget.SetBinding(TextBox.TextProperty, binding);
+                    }
+                    // Enum types use a combobox 
+                    else if (propertyInfo.PropertyType.IsEnum)
+                    {
+                        inputWidget = new ComboBox
+                        {
+                            ItemsSource = Enum.GetValues(propertyInfo.PropertyType),
+                            DataContext = member
+                        };
+
+                        inputWidget.SetBinding(Selector.SelectedItemProperty, binding);
+                    }
+                    // Datetime types use a datepicker
+                    else if (propertyInfo.PropertyType == typeof(DateTime))
+                    {
+                        inputWidget = new DatePicker
+                        {
+                            SelectedDateFormat = DatePickerFormat.Short,
+                            DataContext = member
+                        };
+
+                        inputWidget.SetBinding(DatePicker.SelectedDateProperty, binding);
+                    }
+                    // Boolean types use a checkbox
+                    else if (propertyInfo.PropertyType == typeof(bool))
+                    {
+                        inputWidget = new CheckBox
+                        {
+                            DataContext = member
+                        };
+
+                        inputWidget.SetBinding(ToggleButton.IsCheckedProperty, binding);
+                    }
+                    else
+                    {
+                        // The input widget only implements text (string and numeric types), dropdown-based input (enum types), date pickers (datetime), and checkboxes (bool).
+                        // Any other types are undefined.
+                        throw new NotImplementedException();
+                    }
+                }
+
+                inspectorInput.InputStackPanel.Children.Add(inputWidget);
+                mainWindow.InspectorStackPanel.Children.Add(inspectorInput);
             }
         }
 
@@ -141,7 +218,7 @@ namespace WrestlingManagementSystem
         /// Retrieve all the properties in the subclass and base class <see cref="Member"/> that are marked with the MemberPropertyAttribute.
         /// </summary>
         /// <param name="memberType">The type of the <see cref="Member"/> subclass.</param>
-        private static PropertyInfo[] GetMemberAttributes(Type memberType)
+        private static IEnumerable<PropertyInfo> GetMemberAttributes(Type memberType)
         {        
             PropertyInfo[] properties = memberType?.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => p.IsDefined(typeof(MemberPropertyAttribute), false)).ToArray();
@@ -149,5 +226,11 @@ namespace WrestlingManagementSystem
             // Sort the properties based on their order specified in the attribute.
             return properties?.OrderBy(p => p.GetCustomAttribute<MemberPropertyAttribute>().Order).ToArray();
         }
+
+        /// <summary>
+        /// Convert the pascal-case name to a proper space-separated header
+        /// </summary>
+        /// <param name="propertyInfo">The <see cref="PropertyInfo"/>.</param>
+        private static string GetProperPropertyName(PropertyInfo propertyInfo) => Regex.Replace(propertyInfo.Name, "(\\B[A-Z])", " $1");
     }
 }

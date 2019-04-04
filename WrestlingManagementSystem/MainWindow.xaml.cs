@@ -39,7 +39,7 @@ namespace WrestlingManagementSystem
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private static void OnClosing(object sender, CancelEventArgs args)
+        private static void OnClosing(object sender, CancelEventArgs args)  
         {
             Logger.FlushMessageBuffer();
         }

@@ -16,6 +16,11 @@ namespace WrestlingManagementSystem
     public class MemberPropertyAttribute : Attribute
     {
         /// <summary>
+        /// Can this <see cref="MemberPropertyAttribute"/> be edited in the inspector.
+        /// </summary>
+        public bool IsReadonly { get; }
+
+        /// <summary>
         /// Specifies the order of the property in the data grid columns.
         /// </summary>
         public int Order { get; }
@@ -30,10 +35,12 @@ namespace WrestlingManagementSystem
         /// </summary>
         /// <param name="order">The order of this <see cref="MemberPropertyAttribute"/> in the data grid columns.</param>
         /// <param name="overrideBindingPath">Overrides the data grid binding path of this <see cref="MemberPropertyAttribute"/>.</param>
-        public MemberPropertyAttribute(int order = 0, string overrideBindingPath = null)
+        /// <param name="isReadonly"> Can this <see cref="MemberPropertyAttribute"/> be edited in the inspector.</param>
+        public MemberPropertyAttribute(int order = 0, string overrideBindingPath = null, bool isReadonly = false)
         {
             Order = order;
             OverrideBindingPath = overrideBindingPath;
+            IsReadonly = isReadonly;
         }
     }
 }
