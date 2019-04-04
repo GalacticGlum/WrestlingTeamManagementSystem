@@ -8,9 +8,12 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -138,6 +141,7 @@ namespace WrestlingManagementSystem
             }
 
             ResetInspector();
+            dataContext.IsFilterActive = false;
 
             // Update the title to include the team filename
             if (dataContext.IsTeamSelected)
@@ -157,10 +161,15 @@ namespace WrestlingManagementSystem
         public void ResetInspector()
         {
             InspectorStackPanel.Children.Clear();
-
-            TypeSelectionComboBox.ItemsSource = from assembly in AppDomain.CurrentDomain.GetAssemblies() from type in assembly.GetTypes()
-                where type.IsSubclassOf(typeof(Member)) select type;
+            TypeSelectionComboBox.ItemsSource = GetMemberTypes();
         }
+
+        /// <summary>
+        /// Retrieves a collection of all the types that are subclass of <see cref="Member"/>.
+        /// </summary>
+        /// <returns></returns>
+        private static IEnumerable<Type> GetMemberTypes() => from assembly in AppDomain.CurrentDomain.GetAssemblies() from type in assembly.GetTypes()
+            where type.IsSubclassOf(typeof(Member)) select type;
 
         /// <summary>
         /// Handle the exit menu item clicked event.
@@ -273,6 +282,74 @@ namespace WrestlingManagementSystem
             newMember.YearsOfExperience = member.YearsOfExperience;
 
             team.AddMember(newType, newMember);
+        }
+
+        /// <summary>
+        /// Handle the filter button click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnFilterButtonClick(object sender, RoutedEventArgs args)
+        {
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+            dataContext.IsFilterActive = true;
+
+            // Sort data and then search by name
+            PropertyInfo filterProperty = (PropertyInfo) PropertySortComboBox.SelectedItem;
+            MemberTab tab = (MemberTab)MemberTypeTabControl.SelectedItem;
+
+            bool sortAscending = SortAscendingCheckbox.IsChecked != null && SortAscendingCheckbox.IsChecked.Value;
+
+            // Local predicate function to facilitate order-by property
+            object SortSelector(Member element) => filterProperty.GetValue(element, null);
+            IEnumerable<Member> filterData = sortAscending ? tab.Data.OrderBy(SortSelector) : tab.Data.OrderByDescending(SortSelector);
+
+            if (!string.IsNullOrEmpty(SearchTextbox.Text))
+            {
+
+            }
+
+            DataGrid membersDataGrid = (DataGrid)MemberTypeTabControl.GetChildren().Find(control => control is DataGrid);
+            membersDataGrid.ItemsSource = filterData;
+        }
+
+        /// <summary>
+        /// Handle the clear filter button click.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnClearFilterButtonClick(object sender, RoutedEventArgs args)
+        {
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+            dataContext.IsFilterActive = false;
+
+            MemberTab tab = (MemberTab)MemberTypeTabControl.SelectedItem;
+            DataGrid membersDataGrid = (DataGrid)MemberTypeTabControl.GetChildren().Find(control => control is DataGrid);
+            membersDataGrid.ItemsSource = tab.Data;
+        }
+
+        /// <summary>
+        /// Handle the member tab control selection changed event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnMemberTabControlSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            if (!(args.Source is TabControl)) return;
+
+            MemberTab tab = (MemberTab) MemberTypeTabControl.SelectedItem;
+            if (tab != null)
+            {
+                PropertySortComboBox.ItemsSource = MemberTabControlContentTemplateSelector.GetMemberAttributes(tab.MemberType);
+                PropertySortComboBox.SelectedItem = PropertySortComboBox.Items[0];
+            }
+            else
+            {
+                PropertySortComboBox.ItemsSource = null;
+            }
+
+            MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
+            dataContext.IsFilterActive = false;
         }
     }
 }

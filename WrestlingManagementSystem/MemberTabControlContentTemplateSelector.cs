@@ -242,11 +242,11 @@ namespace WrestlingManagementSystem
         /// Retrieve all the properties in the subclass and base class <see cref="Member"/> that are marked with the MemberPropertyAttribute.
         /// </summary>
         /// <param name="memberType">The type of the <see cref="Member"/> subclass.</param>
-        private static IEnumerable<PropertyInfo> GetMemberAttributes(Type memberType)
+        public static IEnumerable<PropertyInfo> GetMemberAttributes(Type memberType)
         {        
             PropertyInfo[] properties = memberType?.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => p.IsDefined(typeof(MemberPropertyAttribute), false)).ToArray();
-
+           
             // Sort the properties based on their order specified in the attribute.
             return properties?.OrderBy(p => p.GetCustomAttribute<MemberPropertyAttribute>().Order).ToArray();
         }

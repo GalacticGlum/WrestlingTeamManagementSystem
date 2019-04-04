@@ -74,6 +74,19 @@ namespace WrestlingManagementSystem
         }
 
         /// <summary>
+        /// Indicates whether a filter is active.
+        /// </summary>
+        public bool IsFilterActive
+        {
+            get => isFilterActive;
+            set
+            {
+                isFilterActive = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
         /// A collection of the paths to all the team data files that have recently been loaded.
         /// </summary>
         public HashSet<string> RecentLoadedTeamFilepaths { get; }
@@ -87,6 +100,7 @@ namespace WrestlingManagementSystem
         private ObservableCollection<Team> teams;
         private bool isTeamSelected;
         private bool isMemberSelected;
+        private bool isFilterActive;
 
         /// <summary>
         /// Initializes a new <see cref="MainWindowDataContext"/>.
