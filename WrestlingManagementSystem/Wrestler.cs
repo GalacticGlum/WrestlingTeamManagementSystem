@@ -39,7 +39,7 @@ namespace WrestlingManagementSystem
         /// <summary>
         /// Retrieve all the weight categories mapped to gender.
         /// </summary>
-        private static Dictionary<Gender, WeightCategoryCollection> WeightCategories
+        public static Dictionary<Gender, WeightCategoryCollection> WeightCategories
         {
             get
             {
