@@ -119,11 +119,14 @@
                             </Border>
                             <ScrollViewer Grid.Row="1" CanContentScroll="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                                           Visibility="{Binding IsTeamSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <StackPanel>
-                                    <Label FontWeight="Bold">Type</Label>
-                                    <ComboBox Name="TypeSelectionComboBox" SelectionChanged="OnTypeSelectionChanged" DisplayMemberPath="Name" />
-                                    <StackPanel Name="InspectorStackPanel" />
-                                </StackPanel>
+                                <DockPanel>
+                                    <StackPanel DockPanel.Dock="Top">
+                                        <Label FontWeight="Bold">Type</Label>
+                                        <ComboBox Name="TypeSelectionComboBox" SelectionChanged="OnTypeSelectionChanged" DisplayMemberPath="Name" />
+                                    </StackPanel>
+                                    <StackPanel DockPanel.Dock="Top" Name="InspectorStackPanel" VerticalAlignment="Stretch" />
+                                </DockPanel>
+                                
                             </ScrollViewer>
                         </Grid>
                     </Border>
