@@ -116,15 +116,19 @@ namespace WrestlingManagementSystem
             MainWindow mainWindow = (MainWindow)Application.Current.MainWindow;
             if (mainWindow == null) return;
 
-            // Either way we need to clear the inspector stack panel.
-            mainWindow.InspectorStackPanel.Children.Clear();
+            mainWindow.ResetInspector();
 
             // If there are no added items, we are deselecting something.
             if (args.AddedItems.Count == 0) return;
 
             Member member = (Member) args.AddedItems[0];
+            if (member == null) return;
+
             IEnumerable<PropertyInfo> memberAttributes = GetMemberAttributes(member?.GetType());
             if (memberAttributes == null) return;
+
+            // Bind the type combobox to the member type
+            mainWindow.TypeSelectionComboBox.SelectedItem = member.GetType();
 
             foreach (PropertyInfo propertyInfo in memberAttributes)
             {

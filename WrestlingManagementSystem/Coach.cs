@@ -7,6 +7,7 @@
  * Description: DESCRIPTION
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WrestlingManagementSystem.Logging;
@@ -54,7 +55,7 @@ namespace WrestlingManagementSystem
         public override object[] GetSerializedAttributes()
         {
             List<object> attributes = base.GetSerializedAttributes().ToList();
-            attributes.AddRange(new object[] {Type});
+            attributes.AddRange(new object[] {ConvertCoachType(Type)});
 
             return attributes.ToArray();
         }
@@ -92,6 +93,25 @@ namespace WrestlingManagementSystem
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Convert the coach type into a serialized-safe format.
+        /// </summary>
+        /// <param name="coachType">The coach type.</param>
+        /// <returns></returns>
+        private static string ConvertCoachType(CoachType coachType)
+        {
+            switch (coachType)
+            {
+                case CoachType.HandsOn:
+                    return "Hands-on";
+                case CoachType.Support:
+                    return "Support";
+            }
+
+            // If this happens, there is something terribly wrong.
+            return "NULL";
         }
     }
 }

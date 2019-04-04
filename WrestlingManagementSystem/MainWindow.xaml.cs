@@ -10,6 +10,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -132,7 +133,7 @@ namespace WrestlingManagementSystem
             MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
             dataContext.IsTeamSelected = TeamSelectionComboBox.SelectedItem != null;
 
-            InspectorStackPanel.Children.Clear();
+            ResetInspector();
 
             // Update the title to include the team filename
             if (dataContext.IsTeamSelected)
@@ -144,6 +145,17 @@ namespace WrestlingManagementSystem
             {
                 Title = BaseTitle;
             }
+        }
+
+        /// <summary>
+        /// Reset the inspector view.
+        /// </summary>
+        public void ResetInspector()
+        {
+            InspectorStackPanel.Children.Clear();
+
+            TypeSelectionComboBox.ItemsSource = from assembly in AppDomain.CurrentDomain.GetAssemblies() from type in assembly.GetTypes()
+                where type.IsSubclassOf(typeof(Member)) select type;
         }
 
         /// <summary>
@@ -215,6 +227,49 @@ namespace WrestlingManagementSystem
             {
                 LoadTeamFromFile(filepath);
             }
+        }
+        
+        /// <summary>
+        /// Handle the type selection changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnTypeSelectionChanged(object sender, SelectionChangedEventArgs args)
+        {
+            // Find a child data-grid of the tab control
+            DataGrid membersDataGrid = (DataGrid)MemberTypeTabControl.GetChildren().Find(control => control is DataGrid);
+            if (membersDataGrid.SelectedItem == null) return;
+
+            Type newType = (Type) TypeSelectionComboBox.SelectedItem;
+            Member member = (Member) membersDataGrid.SelectedItem;
+
+            // No change in type means that we don't need to do anything
+            if (newType == member.GetType()) return;
+
+            Team team = (Team)TeamSelectionComboBox.SelectedItem;
+
+            // Remove the member from the old type and move it to the new type collection in the team member map
+            team.RemoveMember(member.GetType(), member);
+
+            // Convert the member to its respective type via casting
+            Member newMember = new Member();
+            if (newType == typeof(Wrestler))
+            {
+                newMember = new Wrestler();
+            }
+            else if(newType == typeof(Coach))
+            {
+                newMember = new Coach();
+            }
+
+            // Copy the values from the old member to the converted member
+            newMember.FirstName = member.FirstName;
+            newMember.LastName = member.LastName;
+            newMember.Gender = member.Gender;
+            newMember.School = member.School;
+            newMember.YearsOfExperience = member.YearsOfExperience;
+
+            team.AddMember(newType, newMember);
         }
     }
 }
