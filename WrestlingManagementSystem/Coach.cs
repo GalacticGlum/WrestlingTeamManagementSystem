@@ -3,11 +3,10 @@
  * File Name: Coach.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/27/2019
- * Modified Date: 03/27/2019
+ * Modified Date: 04/03/2019
  * Description: DESCRIPTION
  */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using WrestlingManagementSystem.Logging;

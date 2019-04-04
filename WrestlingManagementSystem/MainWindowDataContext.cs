@@ -3,7 +3,7 @@
  * File Name: MainWindowDataContext.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/31/2019
- * Modified Date: 04/01/2019
+ * Modified Date: 04/03/2019
  * Description: Stores all data regarding the MainWindow.
  *              It is notified when data is changed and updates data accordingly.
  */

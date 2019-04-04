@@ -136,21 +136,25 @@ namespace WrestlingManagementSystem
         /// <summary>
         /// The total number of matches fought by this <see cref="Wrestler"/>.
         /// </summary>
+        [MemberProperty(16, isReadonly: true)]
         public int TotalMatches => Wins + Losses;
 
         /// <summary>
         /// The percentage of wins to total matches by this <see cref="Wrestler"/>.
         /// </summary>
+        [MemberProperty(17, isReadonly: true)]
         public float WinPercentage => Wins / (float)TotalMatches * 100.0f;
 
         /// <summary>
         /// The percentage of losses to total matches by this <see cref="Wrestler"/>.
         /// </summary>
+        [MemberProperty(18, isReadonly: true)]
         public float LossPercentage => Losses / (float)TotalMatches * 100.0f;
 
         /// <summary>
         /// The average points per match for this <see cref="Wrestler"/>.
         /// </summary>
+        [MemberProperty(19, isReadonly: true)]
         public float AverageMatchPoints => TotalPoints / (float)TotalMatches;
 
         /// <summary>

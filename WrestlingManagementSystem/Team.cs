@@ -4,7 +4,7 @@
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/31/2019
  * Modified Date: 04/03/019
- * Description: DESCRIPTION
+ * Description: A collection of members.
  */
 
 using System;
@@ -18,6 +18,9 @@ using WrestlingManagementSystem.Logging;
 
 namespace WrestlingManagementSystem
 {
+    /// <summary>
+    /// A collection of members.
+    /// </summary>
     public class Team
     {
         /// <summary>
@@ -37,6 +40,23 @@ namespace WrestlingManagementSystem
         /// </remarks>
         /// </summary>
         public Dictionary<Type, ObservableCollection<Member>> Members { get; set; }
+
+        /// <summary>
+        /// Retrieves the total number of members in this <see cref="Team"/>.
+        /// </summary>
+        public int TotalMembers
+        {
+            get
+            {
+                int count = 0;
+                foreach (KeyValuePair<Type, ObservableCollection<Member>> pair in Members)
+                {
+                    count += pair.Value.Count;
+                }
+
+                return count;
+            }
+        }
 
         /// <summary>
         /// Retrieves the number of <see cref="Wrestler"/> members on this <see cref="Team"/>.

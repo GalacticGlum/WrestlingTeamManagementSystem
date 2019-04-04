@@ -74,9 +74,11 @@
     <Compile Include="NewTeamCreationWindow.xaml.cs">
       <DependentUpon>NewTeamCreationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TabControlExtended.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="MemberTabControlContentTemplateSelector.cs" />
+    <Compile Include="TeamStatisticsWindow.xaml.cs">
+      <DependentUpon>TeamStatisticsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wrestler.cs" />
     <Compile Include="WrestlerStatus.cs" />
     <Compile Include="WeightCategoryCollection.cs" />
@@ -100,6 +102,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewTeamCreationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TeamStatisticsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

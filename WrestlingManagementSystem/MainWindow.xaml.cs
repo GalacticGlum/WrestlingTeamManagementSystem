@@ -3,7 +3,7 @@
  * File Name: MainWindow.xaml.cs
  * Project Name: WrestlingManagementSystem
  * Creation Date: 03/26/2019
- * Modified Date: 04/02/2019
+ * Modified Date: 04/03/2019
  * Description: Interaction logic for MainWindow.xaml
  */
 
@@ -354,6 +354,20 @@ namespace WrestlingManagementSystem
 
             MainWindowDataContext dataContext = (MainWindowDataContext)DataContext;
             dataContext.IsFilterActive = false;
+        }
+
+        /// <summary>
+        /// Handle the view team statistics button click event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnViewTeamStatisticsClicked(object sender, RoutedEventArgs args)
+        {
+            Team team = (Team)TeamSelectionComboBox.SelectedItem;
+            if (team == null) return;
+
+            TeamStatisticsWindow teamStatistics = new TeamStatisticsWindow(team);
+            teamStatistics.Show();
         }
     }
 }
