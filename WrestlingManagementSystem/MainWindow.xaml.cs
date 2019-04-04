@@ -9,6 +9,7 @@
 
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -23,6 +24,11 @@ namespace WrestlingManagementSystem
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// The base title for this application.
+        /// </summary>
+        private const string BaseTitle = "Wrestling Management System";
+
         /// <inheritdoc />
         /// <summary>
         /// Initializes a new <see cref="MainWindow" />.
@@ -127,6 +133,17 @@ namespace WrestlingManagementSystem
             dataContext.IsTeamSelected = TeamSelectionComboBox.SelectedItem != null;
 
             InspectorStackPanel.Children.Clear();
+
+            // Update the title to include the team filename
+            if (dataContext.IsTeamSelected)
+            {
+                Team selectedTeam = (Team)TeamSelectionComboBox.SelectedItem;
+                Title = string.Join(" - ", BaseTitle, Path.GetFileName(selectedTeam.Filepath));
+            }
+            else
+            {
+                Title = BaseTitle;
+            }
         }
 
         /// <summary>
