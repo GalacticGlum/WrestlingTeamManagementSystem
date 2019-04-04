@@ -122,7 +122,12 @@ namespace WrestlingManagementSystem
             dataContext.Teams.Remove(selectedTeam);
 
             if (dataContext.Teams.Count == 0) return;
-            TeamSelectionComboBox.SelectedItem = (Team)TeamSelectionComboBox.Items[selectedTeamIndex - 1];
+            if (selectedTeamIndex > 0)
+            {
+                selectedTeamIndex -= 1;
+            }
+
+            TeamSelectionComboBox.SelectedItem = (Team)TeamSelectionComboBox.Items[selectedTeamIndex];
         }
 
         /// <summary>

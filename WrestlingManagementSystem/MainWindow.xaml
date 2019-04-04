@@ -25,15 +25,11 @@
                 <MenuItem Header="Save Team" Click="OnSaveTeamMenuClicked" IsEnabled="{Binding IsTeamSelected}" />
                 <MenuItem Header="Close Team" Click="OnCloseTeamMenuClicked" IsEnabled="{Binding IsTeamSelected}" />
                 <Separator />
-                <MenuItem Header="Recent Teams"/>
-                <Separator />
                 <MenuItem Header="Exit" Click="OnExitMenuClicked" />
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Header="Add Member" Click="OnNewMemberButton" IsEnabled="{Binding IsTeamSelected}" />
                 <MenuItem Header="Delete Member" Click="OnDeleteMemberButton" IsEnabled="{Binding IsTeamSelected}" />
-            </MenuItem>
-            <MenuItem Header="View">
             </MenuItem>
         </Menu>
 
