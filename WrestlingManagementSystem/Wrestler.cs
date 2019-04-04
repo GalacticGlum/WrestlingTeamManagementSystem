@@ -80,7 +80,7 @@ namespace WrestlingManagementSystem
         /// <summary>
         /// The date of birth of this <see cref="Wrestler"/>.
         /// </summary>
-        [MemberProperty(7, "BirthdateFormatted", isReadonly: true)]
+        [MemberProperty(7)]
         public DateTime Birthdate { get; set; }
 
         /// <summary>

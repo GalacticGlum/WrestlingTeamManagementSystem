@@ -77,10 +77,16 @@ namespace WrestlingManagementSystem
                 foreach (PropertyInfo propertyInfo in GetMemberAttributes(memberTabType))
                 {
                     MemberPropertyAttribute attribute = propertyInfo.GetCustomAttribute<MemberPropertyAttribute>();
+                    Binding binding = new Binding(string.IsNullOrEmpty(attribute.OverrideBindingPath) ? propertyInfo.Name : attribute.OverrideBindingPath);
+                    if (propertyInfo.PropertyType == typeof(DateTime))
+                    {
+                        binding.StringFormat = "MM/dd/yyy";
+                    }
+
                     dataGrid.Columns.Add(new DataGridTextColumn
                     {
                         Header = GetProperPropertyName(propertyInfo),
-                        Binding = new Binding(string.IsNullOrEmpty(attribute.OverrideBindingPath) ? propertyInfo.Name : attribute.OverrideBindingPath)
+                        Binding = binding
                     });
                 }
             }));
@@ -126,7 +132,7 @@ namespace WrestlingManagementSystem
                 // Use the type of the property to generate the input widget
                 Control inputWidget;
 
-                string bindingPath = string.IsNullOrEmpty(attribute.OverrideBindingPath) ? propertyInfo.Name : attribute.OverrideBindingPath;
+                string bindingPath = propertyInfo.Name;
                 Binding binding = new Binding(bindingPath);
 
                 if (attribute.IsReadonly)
@@ -177,6 +183,7 @@ namespace WrestlingManagementSystem
                             DataContext = member
                         };
 
+                        binding.StringFormat = "MM/dd/yyyy";
                         inputWidget.SetBinding(DatePicker.SelectedDateProperty, binding);
                     }
                     // Boolean types use a checkbox
@@ -191,7 +198,9 @@ namespace WrestlingManagementSystem
                     }
                     else
                     {
-                        // The input widget only implements text (string and numeric types), dropdown-based input (enum types), date pickers (datetime), and checkboxes (bool).
+                        // The input widget only implements text (string and numeric types), dropdown-based input (enum types),
+                        // date pickers (datetime), and checkboxes (bool).
+
                         // Any other types are undefined.
                         throw new NotImplementedException();
                     }
